@@ -338,7 +338,7 @@ descriptor = Object.getOwnPropertyDescriptor(liverpool, 'newEraOf');
 console.log('newEraOf', descriptor);
 ```
 
-[프로퍼티 디스크립터 객체의 프로퍼티(프로퍼티 어트리뷰트) 기본값](./asset/defineProperty.JPG)
+![프로퍼티 디스크립터 객체의 프로퍼티(프로퍼티 어트리뷰트) 기본값](./asset/defineProperty.JPG)
 
 ---
 
@@ -346,7 +346,7 @@ console.log('newEraOf', descriptor);
 
 자바스크립트는 객체의 변경을 방지하는 다양한 메서드를 제공한다. 객체 변경 방지 메서드 들은 객체의 변경을 금지하는 강도가 다르다.
 
-[객체 변경 방지 메서드](./asset/preventObject.JPG)
+![객체 변경 방지 메서드](./asset/preventObject.JPG)
 
 1. 객체 확장 금지
 
@@ -443,6 +443,8 @@ console.log('newEraOf', descriptor);
 
    console.log(Object.getOwnPropertyDescriptors(liverpool)); // 동결된 객체는 writable configurable이 false다.
    ```
+
+---
 
 ### 불변 객체
 
