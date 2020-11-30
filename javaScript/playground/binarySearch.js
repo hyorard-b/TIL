@@ -1,17 +1,14 @@
  // 이진 탐색
  function binarySearch(array, target) {
-    var start = 0, end = array.length - 1;
-    var mid;
+    let start = 0, end = array.length - 1;
   
-    while (start < end) {
-      mid = Math.floor((start + end) / 2);
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
       if (target === array[mid]) return mid;
 
       if (target > array[mid]) start = mid + 1;
       else end = mid - 1;
     }
-  
-    if (target === array[start]) return start;
     return -1;
   }
   
@@ -26,9 +23,8 @@ console.log(binarySearch([1, 2, 3, 4, 5, 6], 7)); // -1
 
 // 재귀 이진 탐색
 function search(array, target) {
-  var start = 0; var
-    end = array.length - 1;
-  var mid = Math.floor((start + end) / 2);
+  const start = 0, end = array.length - 1;
+  const mid = Math.floor((start + end) / 2);
 
   if (start === end && array[start] === target) return array[start];
   if (array.length === 0) return -1;
