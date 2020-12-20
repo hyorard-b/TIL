@@ -435,3 +435,215 @@ ES10(ECMAScript 2019)에서 도입된 `flat` 메서드는 인수로 전달한 �
 // 중첩 배열을 평탄화하기 위한 깊이 값을 Infinity로 지정하여 중첩 배열 모두를 평탄화한다.
 [1, [2, [3, [4]]]].flat(Infinity); // -> [1, 2, 3, 4]
 ```
+
+---
+
+## 배열 고차 함수
+
+함수형 프로그래밍은 순수 함수(pure function)와 보조 함수의 조합을 통해 로직 내에 존재하는 조건문과 반복문을 제거하여 복잡성을 해결하고 변수의 사용을 억제하여 상태 변경을 피하려는 프로그래밍 패러다임이다.
+
+고차 함수(Higher-Order Function, HOF)는 외부 상태의 변경이나 가변 데이터를 피하고, 불변성을 지향하는 함수형 프로그래밍에 기반을 두며, 함수를 인수로 전달받거나 함수를 반환하는 함수를 말한다.
+
+---
+
+### Array.prototype.sort
+
+1. 문자열 정렬
+
+`sort` 메서드는 배열의 요소를 정렬한다. 원본 배열을 직접 변경하며 정렬된 배열을 반환한다. 내림차순으로 요소를 정렬하려면 `sort` 메서드를 사용하여 오름차순으로 정렬한 후 `reverse` 메서드를 사용하여 요소의 순서를 뒤집는다.
+
+2. 숫자 정렬
+
+배열의 요소가 숫자 타입이라 할지라도 배열의 요소를 일시적으로 문자열로 변환한 후 유니코드 코드 포인트의 순서를 기준으로 정렬한다. 따라서 숫자 요소를 정렬할 때는 `sort` 메서드에 정렬 순서를 정의하는 비교 함수를 인수로 전달해야 한다.
+
+```javascript
+array.sort((a, b) => a - b); // 오름차순 정렬
+array.sort((b, a) => b - a); // 내림차순 정렬
+```
+
+3. 객체 정렬
+
+```javascript
+const todos = [
+  { id: 4, content: 'JavaScript' },
+  { id: 1, content: 'HTML' },
+  { id: 2, content: 'CSS' },
+];
+
+const compare = (key) => {
+  return (a, b) => (a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0);
+};
+
+todos.sort(compare('id'));
+console.log(todos);
+```
+
+---
+
+### Array.prototype.forEach
+
+`forEach` 메서드는 반복문을 추상화한 고차 함수로서 내부에서 반복문을 통해 자신을 호출한 배열을 순회하면서 수행해야할 처리를 콜백 함수로 전달받아 반복 호출한다. `forEach` 메서드의 콜백 함수는 `forEach` 메서드를 호출한 배열의 요소값과 인덱스, `forEach` 메서드를 호출한 배열 자체, 즉 `this`를 순차적으로 전달받을 수 있다.
+
+`forEach` 메서드의 반환값은 언제나 `undefined`다.
+
+```javascript
+class Numbers {
+  arr = [];
+
+  /* multiply(array) {
+    array.forEach(function (item) {
+      this.arr.push(item*item);
+    })
+  } */
+
+  /* multiply(array) {
+    array.forEach(function (v) {
+      this.arr.push(v*v);
+    }, this);
+  } */
+
+  multiply(array) {
+    array.forEach((v) => this.arr.push(v * v));
+  }
+}
+```
+
+```javascript
+
+// forEach 메서드의 폴리필
+
+if (!Array.prototype.forEach) {
+  Array.prototype.forEach = function (callBack, thisArg) {
+
+    if (typeof callBack !== 'function) {
+      throw new TypeError(`${callBack} is not a function`);
+    }
+
+    thisArg = thisArg ?? window;
+
+    for (let i = 0; i < this.length; i++) {
+      callBack.call(thisArg, this[i], i, this);
+    }
+  };
+}
+
+```
+
+`forEach` 메서드는 `for` 문과는 달리 `break`, `continue` 문을 사용할 수 없다. 다시 말해, 배열의 모든 요소를 빠짐없이 모두 순회하며 중간에 순회를 중단할 수 없다. `forEach` 메서드는 배열의 모든 요소를 빠짐없이 모두 순회하며 언제나 `undefined`를 반환한다. 희소 배열의 경우 존재하지 않는 요소는 순회 대상에서 제외된다.
+
+---
+
+### Array.prototype.map
+
+`map` 메서드는 자신을 호출한 배열의 모든 요소를 순회하면서 인수로 전달받은 콜백 함수를 반복 호출한다. 그리고 콜백 함수의 반환값들로 구성된 새로운 배열을 반환한다. 이때 원본 배열은 변경되지 않는다.
+
+`forEach` 메서드와 마찬가지로 `map` 메서드의 두 번째 인수로 `map` 메서드의 콜백 함수 내부에서 `this`로 사용할 객체를 전달할 수 있다.
+
+```javascript
+class Prefixer {
+  constructor(prefix) {
+    this.prefix = prefix;
+  }
+
+  add(arr) {
+    return arr.map((v) => this.prefix + v);
+  }
+}
+```
+
+---
+
+### Array.prototype.filter
+
+콜백 함수의 반환값이 `true`인 요소로만 구성된 새로운 배열을 반환한다.
+
+```javascript
+
+class Users {
+  constructor() {
+    this.users = {
+      {id:1, name:'Lee'},
+      {id:2, name:'Kim'}
+    };
+  }
+
+  findById(id) {
+    return this.users.filter(v => v.id === id);
+  }
+
+  remove(id) {
+    this.users = this.users.filter(v => v.id !== id);
+  }
+}
+
+```
+
+---
+
+### Array.prototype.reduce
+
+콜백 함수의 반환값을 다음 순회 시에 콜백 함수의 첫 번째 인수로 전달하면서 콜백 함수를 호출하여 하나의 결과값을 만들어 반환한다. `reduce` 메서드는 첫 번째 인수로 콜백 함수, 두 번째 인수로 초기값을 전달받는다. `reduce` 메서드의 콜백 함수에는 4개의 인수, 초기값 또는 콜백 함수의 이전 반환값, `reduce` 메서드를 호출한 배열의 요소값과 인덱스, `reduce` 메서드를 호출한 배열 자체, 즉 `this`가 전달된다.
+
+```javascript
+// 평균 구하기
+
+const values = [1, 2, 3, 4, 5, 6];
+
+// const avg = values.reduce((res,v,i,arr) => res += v, 0) / values.length;
+
+const avg = values.reduce(
+  (res, v, i, arr) => (i === arr.length - 1 ? (res + v) / arr.length : res + v),
+  0,
+);
+```
+
+```javascript
+// 중복 횟수 구하기
+
+const fruits = ['banana', 'apple', 'orange', 'orange', 'apple'];
+
+const count = fruits.reduce((res, v, i, arr) => {
+  res[arr[i]] ? (res[arr[i]] += 1) : (res[arr[i]] = 1);
+  return res;
+}, {});
+```
+
+```javascript
+// 중첩 배열 평탄화
+
+const values = [1, [2, 3], 4, [5, 6]];
+
+const flatten = values.reduce((res, v, i, arr) => {
+  return res.concat(v);
+}, []);
+```
+
+---
+
+### Array.prototype.some
+
+`some` 메서드는 콜백 함수의 반환값이 단 한 번이라도 참이면 `true`, 모두 거짓이면 `false`를 반환한다. 단, `some` 메서드를 호출한 배열이 빈 배열인 경우 언제나 `false`를 반환한다.
+
+---
+
+### Array.prototype.every
+
+every 메서드는 콜백 함수의 반환값이 모두 참이면 `true`, 단 한 번이라도 거짓이면 `false`를 반환한다. 단, `every` 메서드를 호출한 배열이 빈 배열인 경우 언제나 `true`를 반환한다.
+
+---
+
+### Array.prototype.find
+
+ES6에서 도입된 `find` 메서드는 자신을 호출한 배열의 요소를 순회하면서 인수로 전달된 콜백 함수를 호출하여 반환값이 `true`인 첫 번째 요소를 반환한다. 콜백 함수의 반환값이 `true`인 요소가 존재하지 않는다면 `undefined`를 반환한다.
+
+---
+
+### Array.prototype.findIndex
+
+ES6에서 도입된 `findIndex` 메서드는 자신을 호출한 배열의 요소를 순회하면서 인수로 전달된 콜백 함수를 호출하여 반환값이 `true`인 첫 번째 요소의 인덱스를 반환한다. 콜백 함수의 반환값이 `true`인 요소가 존재하지 않는다면 `-1`을 반환한다.
+
+---
+
+### Array.prototype.flatMap
+
+ES10(ECMAScript 2019)에서 도입된 `flatMap` 메서드는 `map` 메서드를 통해 생성된 새로운 배열을 평탄화한다. 즉, `map` 메서드와 `flat` 메서드를 순차적으로 실행하는 효과가 있다.
