@@ -1,11 +1,11 @@
 function insertionSort(array) {
   for (let i = 1; i < array.length; i++) {
-    const switchVal = array[i];
+    const curValue = array[i];
     for (let j = i - 1; j > -1; j--) {
-      if (array[j] > switchVal) {
+      if (array[j] > curValue) {
         array[j + 1] = array[j];
-        array[j] = switchVal;
-      } else if (array[j] < switchVal) break;
+        array[j] = curValue;
+      } else if (array[j] < curValue) break;
     }
   }
   return array;
