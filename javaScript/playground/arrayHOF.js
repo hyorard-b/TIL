@@ -79,13 +79,29 @@ console.log();
 
 // 6번
 
+// 프로퍼티 참조 연산자
 function toggleCompletedById(id) {
   todos.forEach(v => {
     if (v.id === id) v.completed = !v.completed;
   });
 }
 
+// 스프레드 프로퍼티
+/* function toggleCompletedById(id) {
+  todos.forEach((v, i) => {
+    if (v.id === id) todos[i] = { ...v, completed: !v.completed };
+  });
+}*/
+
+// Object.assign
+/* function toggleCompletedById(id) {
+  todos.forEach((v, i) => {
+    if (v.id === id) todos[i] = Object.assign({},v,{completed:!v.completed});
+  });
+} */
+
 toggleCompletedById(2);
+
 
 console.log('## 6번 ##');
 console.log(todos);
@@ -94,9 +110,21 @@ console.log();
 
 // 7번
 
+// 프로퍼티 접근 연산자
 function toggleCompletedAll() {
   todos.forEach(v => { v.completed = true; });
 }
+
+// 스프레드 연산자
+/* function toggleCompletedAll() {
+  todos.forEach((v, i) => todos[i] = { ...v, completed: !v.completed });
+} */
+
+// Object.assign
+/* function toggleCompletedAll() {
+  todos.forEach((v, i) => todos[i] = Object.assign({},v,{completed:!v.completed}));
+} */
+
 
 toggleCompletedAll();
 
@@ -122,6 +150,16 @@ function countCompletedTodos() {
     return res;
   }, 0);
 }
+
+// 디스트럭처링 할당
+
+/* function countCompletedTodos() {
+  return todos.filter(v => {
+    const { completed } = v;
+    if (completed) return true;
+  }).length;
+} */
+
 
 console.log('## 8번 ##');
 console.log(countCompletedTodos());

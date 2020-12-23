@@ -60,6 +60,8 @@ let regExp = /is/;
 
 target.match(regExp); // -> ["is", index: 5, input: "Is this all there is?", groups: undefined]
 
+let regExp = /is/g;
+
 target.match(regExp); // ["is", "is"]
 ```
 
