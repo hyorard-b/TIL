@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <form class="todoForm">
+    <input class="todoInput" type="text">
+    <button>add</button>
+  </form>
+  <ul class="todos"></ul>
+  <script>
+    // 요소 노드 취득
+    const $form = document.querySelector('.todoForm');
+    const $input = document.querySelector('.todoInput');
+    const $todoList = document.querySelector('.todos');
+
+    // 할 것 더하는 함수
+    const addTodo = _ => {
+      // input 입력된 거 취득
+      const { value } = $input;
+
+      // list 요소 만들기
+      const $li = document.createElement('li');
+
+      // text 노드 만들기
+      const textNode = document.createTextNode(value);
+
+      // check 박스 만들기
+      const $checkBox = document.createElement('input');
+      $checkBox.setAttribute('type', 'checkbox');
+
+      // x 버튼 만들기
+      const $cancelBtn = document.createElement('button');
+      $cancelBtn.textContent = 'X';
+
+      // list 요소에 모두 연결
+      [$checkBox, textNode, $cancelBtn].forEach(v => {
+        $li.appendChild(v);
+      });
+
+      // ul에 연결
+      $todoList.appendChild($li);
+
+      // cancelBtn의 click 이벤트 등록
+      $cancelBtn.onclick = _ => {
+        console.log('shit');
+        $todoList.removeChild($li);
+      };
+    };
+
+    // form의 submit 이벤트 등록
+    $form.onsubmit = e => {
+      console.log('fuck');
+      addTodo(e);
+      e.preventDefault();
+
+      // 초기화하기
+      $input.value = '';
+      $input.focus();
+    };
+  </script>
+</body>
+</html>
