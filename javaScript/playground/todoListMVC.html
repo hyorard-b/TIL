@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form class="todoForm">
+    <input class="todoInput" type="text">
+    <button>add</button>
+  </form>
+  <ul class="todos"></ul>
+  <script>
+    // MVC 패턴
+
+    // 요소 취득
+    const $ul = document.querySelector('.todos');
+    const $input = document.querySelector('.todoInput');
+    const $form = document.querySelector('.todoForm');
+
+    let todos = [];
+
+    // 렌더링
+    const render = () => {
+      $ul.innerHTML = todos.map(({ id, content, completed }) => `<li id="${id}" style="text-decoration:${completed ? 'line-through' : 'none'}"><input type="checkbox" ${completed ? 'checked' : ''}>${content}<button>X</button></li>`).join('');
+    };
+
+    // 데이터 패치
+    const fetchData = () => {
+      todos.push(...[{ id: 1, content: 'HTML', completed: true }, { id: 2, content: 'CSS', completed: false }, { id: 3, content: 'JS', completed: false }]);
+      render();
+    };
+
+    document.addEventListener('DOMContentLoaded', fetchData);
+
+    // 할 일 추가
+    const addTodo = (() => {
+      const generateId = () => Math.max(...todos.map(({ id }) => id)) + 1;
+      return content => {
+        todos = [{ id: generateId(), content, completed: false }, ...todos];
+        render();
+      };
+    })();
+
+    // add 버튼 눌렸을 때
+    $form.onsubmit = e => {
+      e.preventDefault();
+      const newContent = $input.value;
+      if (newContent === '') return;
+      addTodo(newContent);
+    
+      // 초기화하기
+      $input.value = '';
+      $input.focus();
+    };
+
+    // 지우기
+    $ul.onclick = e => {
+      if (e.target.type !== 'submit') return;
+      todos = todos.filter(({ id }) => id !== +e.target.parentNode.id);
+      render();
+    };
+    
+    // 줄 긋기
+    $ul.onchange = e => {
+      todos = todos.map(todo => {
+        const isCheckedLi = +e.target.parentNode.id === todo.id;
+        return isCheckedLi ? { ...todo, completed: !todo.completed } : todo;
+      });
+      render();
+    };
+  </script>
+</body>
+
+</html>

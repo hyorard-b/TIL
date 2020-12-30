@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
 <body>
   <form class="todoForm">
     <input class="todoInput" type="text">
@@ -7,6 +14,7 @@
   </form>
   <ul class="todos"></ul>
   <script>
+    // 노드로 todoList 만들기 
     // 요소 노드 취득
     const $form = document.querySelector('.todoForm');
     const $input = document.querySelector('.todoInput');
@@ -14,41 +22,34 @@
 
     // 할 것 더하는 함수
     const addTodo = _ => {
-      // input 입력된 거 취득
       const { value } = $input;
 
-      // list 요소 만들기
       const $li = document.createElement('li');
-
-      // text 노드 만들기
       const textNode = document.createTextNode(value);
-
-      // check 박스 만들기
       const $checkBox = document.createElement('input');
       $checkBox.setAttribute('type', 'checkbox');
-
-      // x 버튼 만들기
       const $cancelBtn = document.createElement('button');
       $cancelBtn.textContent = 'X';
 
-      // list 요소에 모두 연결
       [$checkBox, textNode, $cancelBtn].forEach(v => {
         $li.appendChild(v);
       });
-
-      // ul에 연결
       $todoList.appendChild($li);
+    };
 
-      // cancelBtn의 click 이벤트 등록
-      $cancelBtn.onclick = _ => {
-        console.log('shit');
-        $todoList.removeChild($li);
-      };
+    // 지우기 함수
+    $todoList.onclick = e => {
+      if (e.target.type !== 'submit') return;
+      e.currentTarget.removeChild(e.target.parentNode);
+    };
+
+    // 체크하면 줄 긋기 함수
+    $todoList.onchange = e => {
+      e.target.parentNode.style.textDecoration = e.target.checked ? 'line-through' : 'none';
     };
 
     // form의 submit 이벤트 등록
     $form.onsubmit = e => {
-      console.log('fuck');
       addTodo(e);
       e.preventDefault();
 
@@ -58,4 +59,5 @@
     };
   </script>
 </body>
+
 </html>
