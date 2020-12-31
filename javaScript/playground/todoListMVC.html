@@ -30,7 +30,7 @@
 
     // 데이터 패치
     const fetchData = () => {
-      todos.push(...[{ id: 1, content: 'HTML', completed: true }, { id: 2, content: 'CSS', completed: false }, { id: 3, content: 'JS', completed: false }]);
+      todos = [{ id: 1, content: 'HTML', completed: true }, { id: 2, content: 'CSS', completed: false }, { id: 3, content: 'JS', completed: false }];
       render();
     };
 
@@ -49,12 +49,12 @@
     $form.onsubmit = e => {
       e.preventDefault();
       const newContent = $input.value;
-      if (newContent === '') return;
+      if (!newContent) return;
       addTodo(newContent);
     
       // 초기화하기
       $input.value = '';
-      $input.focus();
+      $input.focus(); // onfocus는 메서드가 아니라 이벤트..
     };
 
     // 지우기
