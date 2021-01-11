@@ -242,11 +242,19 @@ Promise.allSettled([
   .catch(console.log)
   .finally((v) => console.log(v));
 
-// gerrard is the great
-// undefined
-// undefined
-// undefined
-// ?? ㅅㅂ
+// allSettled 메서드가 반환하는 배열에는 fulfilled, rejected 상관 없이 모든 프로미스의 처리 결과가 객체로 들어있음.
+// 이 경우 배열 안에 두 개의 프로미스 결과 객체가 들어있게 됨.
+// then 메서드에서 배열 안의 객체 당 객체의 value 프로퍼티 값을 출력하게 함.
+// 첫 번째 프로미스는 resolve되었기 때문에 value 프로퍼티가 있음.
+// 두 번째 프로미스는 reject되었기 때문에 value 대신 reason 프로퍼티가 존재.
+// 아래는 출력 결과임.
+// gerrard is the great -> then 메서드
+// undefined -> then 메서드
+// undefined -> 얘는 어디서 나온거임 ?? 얘도 then 메서드에서 출력한 것임
+// undefined -> finally에서 출력. 뭐를 v로 받는지 모르겠셈.
+// 프로미스 또는 앞의 프로미스 결과 처리 메서드에서 에러가 안 일어나면 catch문은 실행되지 않는 것으로 보임.
+// 의문1. 왜 프로미스는 두 개이고, 결과 또한 두개인데, 배열 요소를 출력하면 3개가 출력되는가?
+// 의문2. finally에서 받는 매개변수는 무엇을 인수로 받은 것인가?
 
 // .catch(console.error)
 ```
@@ -268,3 +276,83 @@ Promise.allSettled 메서드가 반환한 배열에는 fulfilled 또는 rejected
 콜백 함수나 이벤트 핸들러를 일시 저장한다는 점에서 태스크 큐와 동일하지만 마이크로태스크 큐는 태스크 큐보다 우선순위가 높다. 즉, 이벤트 루프는 콜 스택이 비면 먼저 마이크로태스크 큐에서 대기하고 있는 함수를 가져와 실행한다. 이후 마이크로태스크 큐가 비면 태스크 큐에서 대기하고 있는 함수를 가져와 실행한다.
 
 ---
+
+## fetch
+
+fetch 함수는 XMLHttpRequest 객체와 마찬가지로 HTTP 요청 전송 기능을 제공하는 클라이언트 사이드 Web API다. fetch 함수는 XMLHttpRequest 객체보다 사용법이 간단하고 프로미스를 지원하기 때문에 비동기 처리를 위한 콜백 패턴의 단점에서 자유롭다.
+
+fetch 함수는 HTTP 응답을 나타내는 Response 객체를 래핑한 Promise 객체를 반환한다. fetch 함수는 HTTP 응답을 나타내는 Response 객체를 래핑한 프로미스를 반환하므로 후속 처리 메서드 then을 통해 프로미스가 resolve한 Response 객체를 전달받을 수 있다. Response 객체는 HTTP 응답을 나타내는 다양한 프로퍼티를 제공한다.
+
+Response.prototype.json 메서드는 Response 객체에서 HTTP 응답 몸체(response.body)를 취득하여 역직렬화한다.
+
+```javascript
+const request = {
+  get(url) {
+    return fetch(url);
+  },
+  post(url, payload) {
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  },
+  patch(url, payload) {
+    return fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  },
+  delete(url) {
+    return fetch(url, {
+      method: 'DELETE',
+    });
+  },
+};
+
+const thiago = {
+  userId: 1,
+  name: 'thiago alcantara',
+  age: 31,
+  preferredFoot: 'right',
+  backNumber: 6,
+  position: {
+    MF: ['DLP', 'AP', 'MEZ'],
+    W: ['IF', 'W'],
+  },
+  reputation: 'world class',
+};
+
+// GET 요청
+request
+  .get('https://jsonplaceholder.typicode.com/todos/1')
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+// POST 요청
+request
+  .post('https://jsonplaceholder.typicode.com/todos', thiago)
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+// PATCH 요청
+request
+  .patch('https://jsonplaceholder.typicode.com/todos/1', {
+    position: {
+      MF: ['DLP', 'AP'],
+    },
+  })
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+// DELETE 요청
+request
+  .delete('https://jsonplaceholder.typicode.com/todos/1')
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+```
