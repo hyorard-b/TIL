@@ -173,7 +173,7 @@ console.log();
 
 // 10번
 
-console.log('@ 9번 @');
+console.log('@ 10번 @');
 console.log();
 
 function getMaxValueFromArray(array) {
@@ -189,3 +189,61 @@ console.log(getMinValueFromArray([3, 6, -2, -5, 7, 3])); // -5
 console.log();
 console.log('###############');
 console.log();
+
+// 11번
+
+console.log('@ 11번 @');
+console.log();
+
+function checkPalindrom(str) {
+  for (let i = 0; i < Math.floor(str.length / 2) + 1; i++) {
+    if (str[i] !== str[str.length-i-1]) return false;
+  }
+  return true;
+}
+
+console.log(checkPalindrom('dad')); // true
+console.log(checkPalindrom('mom')); // true
+console.log(checkPalindrom('palindrom')); // false
+console.log(checkPalindrom('s')); // true
+
+console.log();
+console.log('###############');
+console.log();
+
+// 12번
+
+console.log('@ 12번 @');
+console.log();
+
+function uniq(array) {
+  return [...array].reduce((uniqArr,v) => {
+    if (!uniqArr.includes(v)) uniqArr.push(v);
+    return uniqArr;
+  },[]);
+}
+
+console.log(uniq([2, 1, 2, 3, 4, 3, 4])); // [ 2, 1, 3, 4 ]
+
+console.log();
+console.log('###############');
+console.log();
+
+// 13번
+
+console.log('@ 13번 @');
+console.log();
+
+function isNotOverlapArray(array) {
+  array.reduce()
+}
+
+console.log(isNotOverlapArray([4, 1, 3, 2])); // true
+console.log(isNotOverlapArray([4, 1, 3]));    // false
+
+console.log();
+console.log('###############');
+console.log();
+
+// 14번
+
