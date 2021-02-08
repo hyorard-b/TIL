@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Dark Mode</title>
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       rel="stylesheet"
@@ -97,10 +94,9 @@
       </div>
     </div>
     <article>
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum optio ab
-      porro magni in sunt ipsam, doloremque minima, itaque sapiente consequatur,
-      repellat velit voluptatum accusantium aperiam. Nostrum sunt reprehenderit
-      nemo!
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum optio ab porro magni in sunt
+      ipsam, doloremque minima, itaque sapiente consequatur, repellat velit voluptatum accusantium
+      aperiam. Nostrum sunt reprehenderit nemo!
     </article>
     <script>
       const $toggleBtn = document.querySelector('.toggle-button');
@@ -109,21 +105,17 @@
       const renderMode = () => {
         const mode = localStorage.getItem('mode');
 
-        mode === 'dark'
-          ? $body.classList.add('dark')
-          : $body.classList.remove('dark');
+        mode === 'dark' ? $body.classList.add('dark') : $body.classList.remove('dark');
       };
 
       window.addEventListener('DOMContentLoaded', () => {
-        if (!localStorage.getItem('mode'))
-          localStorage.setItem('mode', 'light');
+        if (!localStorage.getItem('mode')) localStorage.setItem('mode', 'light');
 
         renderMode();
       });
 
       $toggleBtn.onclick = () => {
-        if ($body.classList.contains('dark'))
-          localStorage.setItem('mode', 'light');
+        if ($body.classList.contains('dark')) localStorage.setItem('mode', 'light');
         else localStorage.setItem('mode', 'dark');
 
         renderMode();

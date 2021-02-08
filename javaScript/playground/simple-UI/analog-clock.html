@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Analog clock</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400" rel="stylesheet" />
     <style>
       *,
       *::after,
@@ -146,30 +143,22 @@
       <div class="time time12">|</div>
     </div>
     <script>
-      const $sec = document.querySelector('.second');
-      const $minute = document.querySelector('.minute');
-      const $hour = document.querySelector('.hour');
-
-      // 초침, 분침은 6도씩, 시침은 30도씩
-
       const clock = (() => {
-        let [sec, minute, hour] = [0, 0, 0];
+        const $sec = document.querySelector('.second');
+        const $minute = document.querySelector('.minute');
+        const $hour = document.querySelector('.hour');
+        let sec;
+        let minute;
+        let hour;
 
         return {
           tick() {
-            ++sec;
-            if (sec === 60) {
-              sec = 0;
-              if (++minute === 60) {
-                minute = 0;
-                if (++hour === 12) {
-                  hour = 0;
-                }
-                $hour.style.transform = `rotate(${hour * 30}deg)`;
-              }
-              $minute.style.transform = `rotate(${minute * 6}deg)`;
-            }
-            $sec.style.transform = `rotate(${sec * 6}deg)`;
+            const date = new Date();
+            [sec, minute, hour] = [date.getSeconds(), date.getMinutes(), date.getHours()];
+
+            $hour.style.setProperty('--deg', hour * 30 + minute / 2 + sec / 2 / 60);
+            $minute.style.setProperty('--deg', minute * 6 + sec / 10);
+            $sec.style.setProperty('--deg', sec * 6);
           },
           setClock() {
             return setInterval(this.tick, 1000);
@@ -177,7 +166,9 @@
         };
       })();
 
-      clock.setClock();
+      document.addEventListener('DOMContentLoaded', () => {
+        clock.setClock();
+      });
     </script>
   </body>
 </html>

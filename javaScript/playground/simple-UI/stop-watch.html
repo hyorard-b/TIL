@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Stopwatch</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro" rel="stylesheet" />
     <style>
       body {
         font-family: 'Source Code Pro', monospace;
@@ -72,12 +69,10 @@
       </div>
     </div>
     <script>
-      const $start = document.querySelector('.control1');
-      const $reset = document.querySelector('.control2');
+      const [$startStopBtn, $resetLapsBtn] = document.querySelectorAll('.control');
       const $display = document.querySelector('.display');
       const $laps = document.querySelector('.laps');
 
-      let started = false;
       let timerId = null;
 
       const time = (() => {
@@ -90,7 +85,7 @@
             numLaps = 0;
           },
           tick() {
-            timeSet[0] += 10;
+            timeSet[0] += 1;
 
             if (timeSet[0] >= 99) {
               timeSet[0] = 0;
@@ -102,59 +97,59 @@
             }
           },
           getWatch() {
-            return {
-              timeSet: timeSet.map(time =>
-                ('' + time).length < 2 ? '0' + time : '' + time
-              ),
-              numLaps: ++numLaps
-            };
+            return timeSet.map(time => (('' + time).length < 2 ? '0' + time : '' + time));
+          },
+          getLaps() {
+            return ++numLaps;
           }
         };
       })();
 
       const clickStart = () => {
-        if (!started) {
-          started = true;
-          $reset.removeAttribute('disabled');
+        if (!timerId) {
+          $startStopBtn.textContent = 'Stop';
+          $resetLapsBtn.textContent = 'Laps';
 
-          $start.textContent = 'Stop';
-          $reset.textContent = 'Laps';
+          $resetLapsBtn.removeAttribute('disabled');
 
           timerId = setInterval(() => {
             time.tick();
-            const { timeSet } = time.getWatch();
+            const timeSet = time.getWatch();
             $display.innerHTML = `${timeSet[2]}:${timeSet[1]}:${timeSet[0]}`;
-          }, 100);
+          }, 10);
         } else {
-          started = false;
-
-          $start.textContent = 'Start';
-          $reset.textContent = 'Reset';
+          $startStopBtn.textContent = 'Start';
+          $resetLapsBtn.textContent = 'Reset';
 
           clearInterval(timerId);
+          timerId = null;
         }
       };
 
       const clickReset = () => {
-        if (!started) {
-          $reset.setAttribute('disabled', '');
+        if (!timerId) {
+          $resetLapsBtn.setAttribute('disabled', '');
 
           time.reset();
 
-          const { timeSet } = time.getWatch();
+          const timeSet = time.getWatch();
 
           $display.innerHTML = `${timeSet[2]}:${timeSet[1]}:${timeSet[0]}`;
           $laps.innerHTML = `<div class="lap-title">Laps</div><div class="lap-title">Time</div>`;
         } else {
-          const { timeSet, numLaps } = time.getWatch();
+          const timeSet = time.getWatch();
+          const numLaps = time.getLaps();
 
           $laps.innerHTML += `<div>${numLaps}</div><div>${timeSet[2]}:${timeSet[1]}:${timeSet[0]}</div>`;
         }
       };
 
-      $start.addEventListener('click', clickStart);
-
-      $reset.addEventListener('click', clickReset);
+      document.querySelector('.stopwatch').addEventListener('click', e => {
+        if (!e.target.classList.contains('control')) return;
+        if (e.target === $startStopBtn) {
+          clickStart();
+        } else clickReset();
+      });
     </script>
   </body>
 </html>
