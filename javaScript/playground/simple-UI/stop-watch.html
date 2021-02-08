@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Stopwatch</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro"
+      rel="stylesheet"
+    />
     <style>
       body {
         font-family: 'Source Code Pro', monospace;
@@ -54,19 +57,112 @@
     <h1 class="title">Stopwatch</h1>
     <div class="stopwatch">
       <div class="display">00:00:00</div>
-      <button class="control">Start</button>
-      <button class="control" disabled>Reset</button>
+      <button class="control control1">Start</button>
+      <button class="control control2" disabled>Reset</button>
       <div class="laps">
         <div class="lap-title">Laps</div>
         <div class="lap-title">Time</div>
         <!-- 아래는 자바스크립트로 동적 생성한다. -->
-        <div>1</div>
+        <!-- <div>1</div>
         <div>00:00:65</div>
         <div>2</div>
         <div>00:01:21</div>
         <div>3</div>
-        <div>00:03:95</div>
+        <div>00:03:95</div> -->
       </div>
     </div>
+    <script>
+      const $start = document.querySelector('.control1');
+      const $reset = document.querySelector('.control2');
+      const $display = document.querySelector('.display');
+      const $laps = document.querySelector('.laps');
+
+      let started = false;
+      let timerId = null;
+
+      const time = (() => {
+        let timeSet = [0, 0, 0];
+        let numLaps = 0;
+
+        return {
+          reset() {
+            timeSet = [0, 0, 0];
+            numLaps = 0;
+            return timeSet;
+          },
+          tick() {
+            timeSet[2] += 10;
+
+            if (timeSet[2] >= 99) {
+              timeSet[2] = 0;
+              timeSet[1] += 1;
+            }
+            if (timeSet[1] >= 59) {
+              timeSet[1] = 0;
+              timeSet[0] += 1;
+            }
+          },
+          getTime() {
+            return timeSet.map(time =>
+              ('' + time).length < 2 ? '0' + time : '' + time
+            );
+          },
+          getNumLaps() {
+            return ++numLaps;
+          }
+        };
+      })();
+
+      const curWatch = time;
+
+      const clickStart = () => {
+        if (!started) {
+          started = true;
+          $reset.removeAttribute('disabled');
+
+          // 스탑으로 렌더링
+          $start.textContent = 'Stop';
+          // laps로 렌더링
+          $reset.textContent = 'Laps';
+
+          // 타이머 만들고 인터벌로 렌더링
+          timerId = setInterval(() => {
+            curWatch.tick();
+            const timeSet = curWatch.getTime();
+            $display.innerHTML = `${timeSet[0]}:${timeSet[1]}:${timeSet[2]}`;
+          }, 100);
+        } else {
+          started = false;
+          // start로 렌더링
+          $start.textContent = 'Start';
+          // reset으로 렌더링
+          $reset.textContent = 'Reset';
+
+          // clearInterval
+          clearInterval(timerId);
+        }
+      };
+
+      const clickReset = () => {
+        if (!started) {
+          $reset.setAttribute('disabled', '');
+
+          // 스탑워치 보이는 거 리셋 렌더링
+          curWatch.reset();
+          const timeSet = curWatch.getTime();
+          $display.innerHTML = `${timeSet[0]}:${timeSet[1]}:${timeSet[2]}`;
+          $laps.innerHTML = `<div class="lap-title">Laps</div><div class="lap-title">Time</div>`;
+        } else {
+          // 지금 스탑워치 텍스트 콘텐트 들고 와서 렌더링
+          const timeSet = curWatch.getTime();
+          const numLaps = curWatch.getNumLaps();
+          $laps.innerHTML += `<div>${numLaps}</div><div>${timeSet[0]}:${timeSet[1]}:${timeSet[2]}</div>`;
+        }
+      };
+
+      $start.addEventListener('click', clickStart);
+
+      $reset.addEventListener('click', clickReset);
+    </script>
   </body>
 </html>
