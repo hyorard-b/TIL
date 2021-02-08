@@ -150,6 +150,42 @@
         $rootNav.appendChild($glider);
       };
 
+      // 클릭된 label에 연결되어 있는 input 요소에만 checked 어트리뷰트 넣기
+      const toggleChecked = tabId => {
+        const $clickedInput = document.getElementById(`${tabId}`);
+        const inputs = document.querySelectorAll('input');
+
+        [...inputs].forEach(input => {
+          input.removeAttribute('checked');
+        });
+
+        $clickedInput.setAttribute('checked', '');
+      };
+
+      const toggleActive = tabId => {
+        // 클릭된 label에 연결되어 있는 div 요소에 active 클래스 추가하기
+        const $tabContents = document.querySelectorAll('.tab-content');
+
+        [...$tabContents].forEach(($content, idx) => {
+          $content.classList.remove('active');
+
+          if (idx === tabId - 1) $content.classList.add('active');
+        });
+      };
+
+      const tabFunction = e => {
+        if (!e.target.classList.contains('tab')) return;
+
+        const clickedTabId = e.target.getAttribute('for');
+
+        toggleChecked(clickedTabId);
+        toggleActive(clickedTabId);
+
+        // glider 동작
+        const tabWidth = 200; // document.querySelector(':root').style.getPropertyValue('--tab-width')
+        $glider.style.left = `${tabWidth * (clickedTabId - 1)}px`;
+      };
+
       fetchTabsData().then(res => {
         const $spinner = document.querySelector('.spinner');
 
@@ -159,29 +195,7 @@
         createElems(res); // 요구사항 1. 배열 정보 받아 tabs 생성 후 연결
 
         // tab 눌렸을 때 동작
-        // tab 눌렸을 때 nav가 이벤트 위임
-        $rootNav.onclick = e => {
-          if (!e.target.classList.contains('tab')) return;
-
-          const clickedId = e.target.getAttribute('for');
-          const $clickedInput = document.getElementById(`${clickedId}`);
-          const tabWidth = 200; // document.querySelector(':root').style.getPropertyValue('--tab-width')
-          const $tabContents = document.querySelectorAll('.tab-content');
-
-          // 클릭된 label에 연결되어 있는 input 요소에만 checked 어트리뷰트 넣기
-          [...$rootNav.children].forEach(child => {
-            child.removeAttribute('checked');
-          });
-          $clickedInput.setAttribute('checked', '');
-
-          // 클릭된 label에 연결되어 있는 div 요소에 active 클래스 추가하기
-          [...$tabContents].forEach(($content, idx) => {
-            $content.classList.remove('active');
-            if (idx === clickedId - 1) $content.classList.add('active');
-          });
-
-          $glider.style.left = `${tabWidth * (clickedId - 1)}px`;
-        };
+        $rootNav.onclick = tabFunction;
       });
     </script>
   </body>
