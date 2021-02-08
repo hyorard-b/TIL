@@ -88,57 +88,49 @@
           reset() {
             timeSet = [0, 0, 0];
             numLaps = 0;
-            return timeSet;
           },
           tick() {
-            timeSet[2] += 10;
+            timeSet[0] += 10;
 
-            if (timeSet[2] >= 99) {
-              timeSet[2] = 0;
+            if (timeSet[0] >= 99) {
+              timeSet[0] = 0;
               timeSet[1] += 1;
             }
             if (timeSet[1] >= 59) {
               timeSet[1] = 0;
-              timeSet[0] += 1;
+              timeSet[2] += 1;
             }
           },
-          getTime() {
-            return timeSet.map(time =>
-              ('' + time).length < 2 ? '0' + time : '' + time
-            );
-          },
-          getNumLaps() {
-            return ++numLaps;
+          getWatch() {
+            return {
+              timeSet: timeSet.map(time =>
+                ('' + time).length < 2 ? '0' + time : '' + time
+              ),
+              numLaps: ++numLaps
+            };
           }
         };
       })();
-
-      const curWatch = time;
 
       const clickStart = () => {
         if (!started) {
           started = true;
           $reset.removeAttribute('disabled');
 
-          // 스탑으로 렌더링
           $start.textContent = 'Stop';
-          // laps로 렌더링
           $reset.textContent = 'Laps';
 
-          // 타이머 만들고 인터벌로 렌더링
           timerId = setInterval(() => {
-            curWatch.tick();
-            const timeSet = curWatch.getTime();
-            $display.innerHTML = `${timeSet[0]}:${timeSet[1]}:${timeSet[2]}`;
+            time.tick();
+            const { timeSet } = time.getWatch();
+            $display.innerHTML = `${timeSet[2]}:${timeSet[1]}:${timeSet[0]}`;
           }, 100);
         } else {
           started = false;
-          // start로 렌더링
+
           $start.textContent = 'Start';
-          // reset으로 렌더링
           $reset.textContent = 'Reset';
 
-          // clearInterval
           clearInterval(timerId);
         }
       };
@@ -147,16 +139,16 @@
         if (!started) {
           $reset.setAttribute('disabled', '');
 
-          // 스탑워치 보이는 거 리셋 렌더링
-          curWatch.reset();
-          const timeSet = curWatch.getTime();
-          $display.innerHTML = `${timeSet[0]}:${timeSet[1]}:${timeSet[2]}`;
+          time.reset();
+
+          const { timeSet } = time.getWatch();
+
+          $display.innerHTML = `${timeSet[2]}:${timeSet[1]}:${timeSet[0]}`;
           $laps.innerHTML = `<div class="lap-title">Laps</div><div class="lap-title">Time</div>`;
         } else {
-          // 지금 스탑워치 텍스트 콘텐트 들고 와서 렌더링
-          const timeSet = curWatch.getTime();
-          const numLaps = curWatch.getNumLaps();
-          $laps.innerHTML += `<div>${numLaps}</div><div>${timeSet[0]}:${timeSet[1]}:${timeSet[2]}</div>`;
+          const { timeSet, numLaps } = time.getWatch();
+
+          $laps.innerHTML += `<div>${numLaps}</div><div>${timeSet[2]}:${timeSet[1]}:${timeSet[0]}</div>`;
         }
       };
 
