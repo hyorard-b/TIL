@@ -150,7 +150,7 @@
         $rootNav.appendChild($glider);
       };
 
-      // 클릭된 label에 연결되어 있는 input 요소에만 checked 어트리뷰트 넣기
+      // [탭] 클릭된 label에 연결되어 있는 input 요소에만 checked 어트리뷰트 셋팅
       const toggleChecked = tabId => {
         const $clickedInput = document.getElementById(`${tabId}`);
         const inputs = document.querySelectorAll('input');
@@ -162,8 +162,8 @@
         $clickedInput.setAttribute('checked', '');
       };
 
+      // [탭] 클릭된 label에 연결되어 있는 div 요소에 active 클래스 추가
       const toggleActive = tabId => {
-        // 클릭된 label에 연결되어 있는 div 요소에 active 클래스 추가하기
         const $tabContents = document.querySelectorAll('.tab-content');
 
         [...$tabContents].forEach(($content, idx) => {
