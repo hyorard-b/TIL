@@ -1,0 +1,17 @@
+{
+  "todos": [
+    {
+      "id": {},
+      "completed": false
+    },
+    {
+      "id": "oW5NSNZ",
+      "content": "123132",
+      "completed": false
+    },
+    {
+      "id": "checkbox",
+      "completed": false
+    }
+  ]
+}

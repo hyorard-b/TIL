@@ -105,3 +105,9 @@ dist
 
 .eslintrc.json
 .prettierrc
+
+# input/output file
+*.txt
+
+# Custom Ignore File
+javaScript/playfround/
