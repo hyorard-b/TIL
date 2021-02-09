@@ -10,7 +10,7 @@
       rel="stylesheet"
     />
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-    <script src="./scroll-top.js"></script>
+    <script defer src="./scroll-top.js"></script>
     <style>
       body {
         font-family: 'Open Sans';
@@ -137,22 +137,5 @@
     </div>
     <div class="scroll-icon bx bxs-chevrons-up abc"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-    <script>
-      const $scrollIcon = document.querySelector('.scroll-icon');
-      const TOP_POS_TO_START_SHOWING = 400;
-
-      window.onscroll = _.throttle(() => {
-        $scrollIcon.style.display =
-          window.pageYOffset >= TOP_POS_TO_START_SHOWING ? 'block' : 'none';
-      }, 200);
-
-      $scrollIcon.onclick = () => {
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
-      };
-    </script>
   </body>
 </html>
