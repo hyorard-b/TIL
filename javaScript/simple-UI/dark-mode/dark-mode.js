@@ -1,22 +1,23 @@
 const $body = document.querySelector('body');
 
-const renderMode = () => {
-  const mode = localStorage.getItem('mode');
+const init = () => {
+  let theme = localStorage.getItem('mode');
+  if (!theme) {
+    const { matches } = window.matchMedia('(prefers-color-scheme: dark)');
+    theme = matches ? 'dark' : 'light';
+    localStorage.setItem('mode', theme);
+  }
+  $body.classList.toggle('dark', theme === 'dark');
 
-  mode === 'dark' ? $body.classList.add('dark') : $body.classList.remove('dark');
+  setTimeout(() => {
+    document.body.style.opacity = 1;
+  }, 300);
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  if (!localStorage.getItem('mode')) localStorage.setItem('mode', 'light');
+window.addEventListener('DOMContentLoaded', init);
 
-  const $toggleBtn = document.querySelector('.toggle-button');
+document.querySelector('.toggle-button').onclick = () => {
+  localStorage.setItem('mode', localStorage.getItem('mode') === 'dark' ? 'light' : 'dark');
 
-  renderMode();
-
-  $toggleBtn.onclick = () => {
-    if ($body.classList.contains('dark')) localStorage.setItem('mode', 'light');
-    else localStorage.setItem('mode', 'dark');
-
-    renderMode();
-  };
-});
+  $body.classList.toggle('dark');
+};
