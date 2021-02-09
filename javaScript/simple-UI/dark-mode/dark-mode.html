@@ -10,6 +10,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       rel="stylesheet"
     />
+    <script defer src="./dark-mode.js"></script>
     <style>
       *,
       *::after,
@@ -98,29 +99,5 @@
       ipsam, doloremque minima, itaque sapiente consequatur, repellat velit voluptatum accusantium
       aperiam. Nostrum sunt reprehenderit nemo!
     </article>
-    <script>
-      const $body = document.querySelector('body');
-
-      const renderMode = () => {
-        const mode = localStorage.getItem('mode');
-
-        mode === 'dark' ? $body.classList.add('dark') : $body.classList.remove('dark');
-      };
-
-      window.addEventListener('DOMContentLoaded', () => {
-        if (!localStorage.getItem('mode')) localStorage.setItem('mode', 'light');
-
-        const $toggleBtn = document.querySelector('.toggle-button');
-
-        renderMode();
-
-        $toggleBtn.onclick = () => {
-          if ($body.classList.contains('dark')) localStorage.setItem('mode', 'light');
-          else localStorage.setItem('mode', 'dark');
-
-          renderMode();
-        };
-      });
-    </script>
   </body>
 </html>
