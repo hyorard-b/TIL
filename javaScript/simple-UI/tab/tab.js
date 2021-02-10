@@ -17,6 +17,11 @@ const fetchTabsData = () => {
             id: 3,
             title: 'JavaScript',
             content: `JavaScript(JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles.`
+          },
+          {
+            id: 4,
+            title: 'React',
+            content: `React has been designed from the start for gradual adoption, and you can use as little or as much React as you need. Whether you want to get a taste of React, add some interactivity to a simple HTML page, or start a complex React-powered app, the links in this section will help you get started.`
           }
         ]),
       1000
@@ -25,14 +30,11 @@ const fetchTabsData = () => {
 };
 
 // Do something!
-const $rootNav = document.createElement('nav');
-const $glider = document.createElement('span');
-
 // 요구사항 1. 배열 정보 받아 tabs 생성 후 연결
-const createElems = res => {
+const createTabs = res => {
   const $tabs = document.querySelector('.tabs');
-
-  $tabs.appendChild($rootNav);
+  const $rootNav = document.createElement('nav');
+  const $fragment = document.createDocumentFragment();
 
   res.forEach(data => {
     const $input = document.createElement('input');
@@ -49,15 +51,19 @@ const createElems = res => {
     $label.textContent = `${data.title}`;
 
     $content.classList.add('tab-content');
-    if (data.id === 1) $content.classList.add('active');
     $content.textContent = `${data.content}`;
+    if (data.id === 1) $content.classList.add('active');
 
     $rootNav.appendChild($input);
     $rootNav.appendChild($label);
-    $tabs.appendChild($content);
+    $fragment.appendChild($content);
   });
+  const $glider = document.createElement('span');
   $glider.classList.add('glider');
+
   $rootNav.appendChild($glider);
+  $tabs.appendChild($rootNav);
+  $tabs.appendChild($fragment);
 };
 
 // [탭] 클릭된 label에 연결되어 있는 input 요소에만 checked 어트리뷰트 셋팅
@@ -83,27 +89,30 @@ const toggleActive = tabId => {
   });
 };
 
-const tabFunction = e => {
-  if (!e.target.classList.contains('tab')) return;
+// glider 동작
+const gliderFunction = id => {
+  const $glider = document.querySelector('.glider');
+  const tabWidth = 200; // document.querySelector(':root').style.getPropertyValue('--tab-width')
+  $glider.style.transform = `translate3D(${tabWidth * (id - 1)}px, 0, 0)`;
+};
 
-  const clickedTabId = e.target.getAttribute('for');
+const tabFunction = e => {
+  const clickedTabId = e.target.getAttribute('id');
 
   toggleChecked(clickedTabId);
   toggleActive(clickedTabId);
-
-  // glider 동작
-  const tabWidth = 200; // document.querySelector(':root').style.getPropertyValue('--tab-width')
-  $glider.style.left = `${tabWidth * (clickedTabId - 1)}px`;
+  gliderFunction(clickedTabId);
 };
 
-fetchTabsData().then(res => {
-  const $spinner = document.querySelector('.spinner');
+window.addEventListener('DOMContentLoaded', async () => {
+  const res = await fetchTabsData();
 
-  $spinner.style.display = 'none'; // 요구사항 2. 스피너 숨김
-  document.querySelector(':root').style.setProperty('--tabs-length', res.length); // 요구사항 3. 가변 length 대처
+  document.querySelector('.spinner').style.display = 'none'; // 요구사항 2. 스피너 숨김
 
-  createElems(res); // 요구사항 1. 배열 정보 받아 tabs 생성 후 연결
+  document.documentElement.style.setProperty('--tabs-length', res.length); // 요구사항 3. 가변 length 대처
+
+  createTabs(res); // 요구사항 1. 배열 정보 받아 tabs 생성 후 연결
 
   // tab 눌렸을 때 동작
-  $rootNav.onclick = tabFunction;
+  document.querySelector('nav').onchange = tabFunction;
 });
