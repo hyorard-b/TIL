@@ -1,30 +1,31 @@
-const $popupBtn = document.querySelector('.popup-button');
 const $modalContainer = document.querySelector('.modal-container');
-const $modal = document.querySelector('.popup-modal');
 const $submitBtn = document.querySelector('.popup-submit');
-const $closeBtn = document.querySelector('.popup-close');
-const $cancelBtn = document.querySelector('.popup-cancel');
 const $input = document.querySelector('.popup-input');
 
 const render = () => {
   const $popupMessage = document.querySelector('.popup-message');
 
-  $popupMessage.innerText = `from popup: ${$input.value}`;
-  // $input.value = '';
+  $popupMessage.textContent = `from popup: ${$input.value}`;
+  $input.value = '';
 };
 
-$popupBtn.onclick = () => {
+document.querySelector('.popup-button').onclick = () => {
   $modalContainer.style.display = 'block';
   $input.focus();
 };
 
-$modalContainer.onclick = () => {
-  $modalContainer.style.display = 'none';
+document.querySelector('.popup-modal').onclick = e => {
+  if (
+    e.target === $submitBtn ||
+    e.target === document.querySelector('.popup-close') ||
+    e.target === document.querySelector('.popup-cancel')
+  )
+    return;
+  e.stopPropagation();
 };
 
-$modal.onclick = e => {
-  if (e.target === $submitBtn || e.target === $closeBtn || e.target === $cancelBtn) return;
-  e.stopPropagation();
+$modalContainer.onclick = () => {
+  $modalContainer.style.display = 'none';
 };
 
 $submitBtn.onclick = e => {
