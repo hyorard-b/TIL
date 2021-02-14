@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <!-- 원하는 폰트와 아이콘을 사용해도 좋다. -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Open Sans';
+        font-weight: 300;
+      }
+      .title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
+
+      /* 뷰를 구현하세요. */
+      .calendar {
+        --width: 400px;
+        /* font-size: ? */
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(200, 200, 200, 0.9));
+        width: var(--width);
+        height: calc(var(--width) * 1.5);
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 1.6rem;
+      }
+      .calendar-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20%;
+        background-color: rgb(59, 186, 109);
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+      }
+      .dates {
+        color: #fff;
+        font-size: 0.8em;
+      }
+      .material-icons {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.8em;
+      }
+      .material-icons.left {
+        margin-left: calc(var(--width) / 40);
+      }
+      .material-icons.right {
+        margin-right: calc(var(--width) / 40);
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-rows: 13% 5%;
+        justify-items: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 0 0 10px 10px;
+        height: 80%;
+        /* padding: calc(var(--width) / 20); */
+        font-size: 0.7em;
+      }
+      .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        justify-items: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+      }
+      .day {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        justify-items: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Calendar</h1>
+    <div class="calendar">
+      <div class="calendar-nav">
+        <button class="material-icons left">keyboard_arrow_left</button>
+        <div class="dates">
+          <div class="year">February</div>
+          <div class="month">2021</div>
+        </div>
+        <button class="material-icons right">keyboard_arrow_right</button>
+      </div>
+      <div class="calendar-grid">
+        <div class="days"><span>sun</span></div>
+        <div></div>
+        <div class="day"><span>1</span></div>
+      </div>
+    </div>
+  </body>
+</html>
