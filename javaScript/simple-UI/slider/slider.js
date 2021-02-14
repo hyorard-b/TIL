@@ -49,38 +49,37 @@ const carousel = ($container, images) => {
     if (!e.target.classList.contains('carousel-control')) return;
 
     // 요구사항 2. 슬라이딩 애니메이션 지원
-    if (e.target.classList.contains('prev')) {
-      $slides.style.setProperty('--currentSlide', --slideIdx);
+    $slides.style.setProperty(
+      '--currentSlide',
+      e.target.classList.contains('prev') ? --slideIdx : ++slideIdx
+    );
 
-      // 요구사항 1. 무한 루핑 슬라이드 (앞)
-      if (slideIdx === 0) {
-        slideIdx = images.length;
+    // 요구사항 1. 무한 루핑 슬라이드 (앞)
+    if (slideIdx === 0) {
+      slideIdx = images.length;
+      setTimeout(() => {
+        $slides.style.transition = 'none';
+        $slides.style.setProperty('--currentSlide', slideIdx);
+
+        // 0ms 만에 옮기면서 스타일이 적용되어 50ms의 시간을 주었음
         setTimeout(() => {
-          $slides.style.transition = '0ms none';
-          $slides.style.setProperty('--currentSlide', slideIdx);
+          $slides.style.transition = transition;
+        }, 50);
+      }, 500);
+    }
 
-          // 0ms 만에 옮기면서 스타일이 적용되어 50ms의 시간을 주었음
-          setTimeout(() => {
-            $slides.style.transition = transition;
-          }, 50);
-        }, 500);
-      }
-    } else {
-      $slides.style.setProperty('--currentSlide', ++slideIdx);
+    // 요구사항 1. 무한 루핑 슬라이드 (뒤)
+    if (slideIdx === images.length + 1) {
+      slideIdx = 1;
+      setTimeout(() => {
+        $slides.style.transition = 'none';
+        $slides.style.setProperty('--currentSlide', slideIdx);
 
-      // 요구사항 1. 무한 루핑 슬라이드 (뒤)
-      if (slideIdx === images.length + 1) {
-        slideIdx = 1;
+        // 0ms 만에 옮기면서 스타일이 적용되어 50ms의 시간을 주었음
         setTimeout(() => {
-          $slides.style.transition = '0ms none';
-          $slides.style.setProperty('--currentSlide', slideIdx);
-
-          // 0ms 만에 옮기면서 스타일이 적용되어 50ms의 시간을 주었음
-          setTimeout(() => {
-            $slides.style.transition = transition;
-          }, 50);
-        }, 500);
-      }
+          $slides.style.transition = transition;
+        }, 50);
+      }, 500);
     }
   }, 650);
 };
