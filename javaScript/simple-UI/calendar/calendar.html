@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <script src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
+    <script defer type="module" src="calendar.js"></script>
     <style>
       *,
       *::after,
@@ -44,7 +46,7 @@
         border-radius: 10px 10px 0 0;
         text-align: center;
       }
-      .dates {
+      .year-month {
         color: #fff;
         font-size: 0.8em;
       }
@@ -80,7 +82,7 @@
         height: 100%;
         width: 100%;
       }
-      .day {
+      .dates {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(6, 1fr);
@@ -88,6 +90,7 @@
         align-items: center;
         height: 100%;
         width: 100%;
+        font-weight: 400;
       }
     </style>
   </head>
@@ -96,16 +99,16 @@
     <div class="calendar">
       <div class="calendar-nav">
         <button class="material-icons left">keyboard_arrow_left</button>
-        <div class="dates">
+        <div class="year-month">
           <div class="year">February</div>
           <div class="month">2021</div>
         </div>
         <button class="material-icons right">keyboard_arrow_right</button>
       </div>
       <div class="calendar-grid">
-        <div class="days"><span>sun</span></div>
+        <div class="days"></div>
         <div></div>
-        <div class="day"><span>1</span></div>
+        <div class="dates"></div>
       </div>
     </div>
   </body>
