@@ -110,4 +110,6 @@ dist
 *.txt
 
 # Custom Ignore File
-javaScript/playfround/
+javaScript/playground/
+
+.vscode
