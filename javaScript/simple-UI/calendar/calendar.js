@@ -1,21 +1,28 @@
-const today = new Date(2021, 0, 1);
-console.log(today);
-const firstDay = dateFns.format(today.setDate(1), 'e') - 1; // setDate(1) 해줘야 함 달 바뀔 때 마다
+let today = new Date();
 
-// 달 마지막 일자 구하기
-const getLastDate = month => {
-  const days31 = [1, 3, 5, 7, 8, 10, 12];
-  const days30 = [4, 6, 9, 11];
+// 연, 월 렌더링
+const renderYearMonth = () => {
+  const $year = document.querySelector('.year');
+  const $month = document.querySelector('.month');
 
-  return days31.includes(month) ? '31' : days30.includes(month) ? '30' : '28';
+  $year.textContent = dateFns.format(today, 'YYYY');
+  $month.textContent = dateFns.format(today, 'MMMM');
 };
 
-// 저번 달 일수
+// 달 마지막 일자 구하기
+const getLastDate = month =>
+  [1, 3, 5, 7, 8, 10, 12].includes(month) ? '31' : [4, 6, 9, 11].includes(month) ? '30' : '28';
+
+// 저번 달 구하기
+const getLastMonth = dateObj => (dateObj.getMonth() === 0 ? 12 : dateObj.getMonth());
+
+// 요구 사항 3-1. 저번 달 날짜 채우기
 const getLastMonthDays = dateObj => {
-  const lastMonth = dateObj.getMonth() === 0 ? 12 : dateObj.getMonth();
+  const lastMonth = getLastMonth(dateObj);
   let lastMonthLastDate = getLastDate(lastMonth);
   const lastMonthDays = [];
-  for (let i = 0; i < dateObj.getDay(); i++) {
+  const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  for (let i = 0; i < thisMonth.getDay(); i++) {
     lastMonthDays.push(lastMonthLastDate--);
   }
   return lastMonthDays.reverse();
@@ -31,26 +38,13 @@ const getCurrentMonthDays = dateObj => {
   return currentMonthDays;
 };
 
-// 다음 달 일수
+// 요구 사항 3-2. 저번 달 날짜 채우기
 const getNextMonthDays = numDays => {
   const nextMonthDays = [];
   for (let i = 1; i < 43 - numDays; i++) {
     nextMonthDays.push(i);
   }
   return nextMonthDays;
-};
-
-const renderDays = () => {
-  const $days = document.querySelector('.days');
-
-  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  const $fragment = document.createDocumentFragment();
-  days.forEach(day => {
-    const $span = document.createElement('span');
-    $span.textContent = `${day}`;
-    $fragment.appendChild($span);
-  });
-  $days.appendChild($fragment);
 };
 
 const renderDates = dateObj => {
@@ -60,17 +54,6 @@ const renderDates = dateObj => {
   const currentMonthDates = getCurrentMonthDays(dateObj);
   const nextMonthDates = getNextMonthDays(lastMonthDates.length + currentMonthDates.length);
   const $totalDates = document.createDocumentFragment();
-  const today = new Date().getDate();
-
-  const markToday = $day => {
-    $day.style.display = 'flex';
-    $day.style.width = '100%';
-    $day.style.height = '100%';
-    $day.style.justifyContent = 'center';
-    $day.style.alignItems = 'center';
-    $day.style.border = '3px solid rgb(59, 186, 109)';
-    $day.style.borderRadius = '50%';
-  };
 
   const attachDate = date => {
     const $span = document.createElement('span');
@@ -78,12 +61,24 @@ const renderDates = dateObj => {
 
     $span.textContent = `${date}`;
 
+    // 요구 사항 5. 일요일 빨간색 표시
     if (isSunday) $span.style.color = 'red';
-    if (date === today) markToday($span);
 
     $totalDates.appendChild($span);
 
     return $span;
+  };
+
+  // 요구 사항 4. 오늘 날짜 표시
+  const markToday = $day => {
+    console.log('asdfasf', $day);
+    $day.style.display = 'flex';
+    $day.style.width = '100%';
+    $day.style.height = '100%';
+    $day.style.justifyContent = 'center';
+    $day.style.alignItems = 'center';
+    $day.style.border = '3px solid rgb(59, 186, 109)';
+    $day.style.borderRadius = '50%';
   };
 
   lastMonthDates.forEach(date => {
@@ -97,7 +92,23 @@ const renderDates = dateObj => {
   $day.appendChild($totalDates);
 };
 
+// 요구 사항 1. 현재 기준 초기 렌더링
 const init = dateObj => {
+  // 요일 렌더링
+  const renderDays = () => {
+    const $days = document.querySelector('.days');
+
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const $fragment = document.createDocumentFragment();
+    days.forEach(day => {
+      const $span = document.createElement('span');
+      $span.textContent = `${day}`;
+      $fragment.appendChild($span);
+    });
+    $days.appendChild($fragment);
+  };
+
+  renderYearMonth();
   renderDays();
   renderDates(dateObj);
 };
@@ -106,4 +117,20 @@ window.addEventListener('DOMContentLoaded', () => {
   init(today);
 });
 
+// 요구 사항 2. 익월 / 전월 동적 생성 렌더링
+document.querySelector('.calendar-nav').onclick = e => {
+  if (!e.target.classList.contains('month-change')) return;
+
+  today = e.target.classList.contains('left')
+    ? new Date(dateFns.subMonths(today, 1))
+    : new Date(dateFns.subMonths(today, -1));
+
+  renderYearMonth();
+
+  const $dates = document.querySelector('.dates');
+  [...$dates.children].forEach($date => {
+    $dates.removeChild($date);
+  });
+  renderDates(today);
+};
 // 다음 달 전 달 렌더링
