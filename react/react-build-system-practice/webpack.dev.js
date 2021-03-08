@@ -17,6 +17,16 @@ module.exports = {
     filename: 'js/[name].js',
     publicPath: '/',
   },
+  // 모듈 (규칙) - 로더 객체
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/i,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      }
+    ]
+  },
 
   // 개발 서버 설정
   devServer: {
@@ -24,5 +34,6 @@ module.exports = {
     index: 'index.html',
     port: 9000,
     hot: true, // 바뀐 모듈만 리로드
+    writeToDisk: true
   }
 };
