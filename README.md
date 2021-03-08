@@ -45,9 +45,9 @@
 
       ![아코디언](./assets/accordion.gif)
     
-    - [calendar](./assets/calendar.gif)
+    - [calendar](https://github.com/hyorard-b/TIL/tree/main/javaScript/simple-UI/calendar)
 
-      ![달력](https://github.com/hyorard-b/TIL/tree/main/javaScript/simple-UI/calendar)
+      ![달력](./assets/calendar.gif)
 
 
   - [todo-express](https://github.com/hyorard-b/TIL/tree/main/javaScript/todo-express)
