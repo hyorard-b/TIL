@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import App from './containers/App/App';
 
 // 첫 번째 테스트 케이스
 test('앱이 정상 동작?', () => {

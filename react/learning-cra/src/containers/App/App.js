@@ -1,7 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
+import {createElement as h} from 'react';
+import logo from '../../assets/logo.svg';
 
 function App() {
+  // React Element, Fragment 반환
   return (
     <div className="App">
       <header className="App-header">
@@ -20,6 +22,6 @@ function App() {
       </header>
     </div>
   );
-}
+  }
 
 export default App;
