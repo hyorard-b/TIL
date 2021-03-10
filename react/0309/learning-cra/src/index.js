@@ -4,6 +4,8 @@ import './styles/index.css';
 import {StrictMode} from 'react';
 import {render} from 'react-dom';
 
+import renderButton from './containers/App/Btn.js';
+
 // import App from './containers/App/App';
 
 const songs = [
@@ -58,8 +60,11 @@ const albumElement = (() => ({title, artist, ...figureInfo}) => {
 
 render(
   <StrictMode>
-    {/* <App /> */}
-    {albumElement(songs[0])}
+    {renderButton({state:'idle', text:'업로드', path:'up-arrow'})}
+    {renderButton({state:'pending', text:'업로드 중', path:'spinner'})}
+    {renderButton({state:'resolved', text:'완료', path:'check-mark'})}
+    {renderButton({state:'rejected', text:'실패', path:'cross'})}
+    {renderButton({state:'disabled', text:'업로드', path:'not-allowed', disabled:true})}
   </StrictMode>,
   document.getElementById('root')
 );
