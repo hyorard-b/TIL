@@ -1,3 +1,4 @@
+import React, {Fragment} from 'react';
 import {data as buttonData} from '../data/button.json'
 
 const renderedButtonElements = buttonData.map(({id, state, content, icon, disabled = false}) => (
@@ -23,7 +24,7 @@ console.log(`${process.env.PUBLIC_URL}/assets/icons/wasda.svg`)
 
 function App() {
   return (
-    <div className="container">{renderedButtonElements}</div>
+    <Fragment>{renderedButtonElements}</Fragment>
   )
 }
 
