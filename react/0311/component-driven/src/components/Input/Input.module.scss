@@ -1,0 +1,30 @@
+$bg-color: #fff;
+$color: #111;
+$font-size: 16px;
+$font-weight: 500;
+
+.input {
+  width: 296px;
+  height: 50px;
+  background-color: $bg-color;
+  color: $color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  padding-left: 14px;
+  border: none;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(147, 153, 210, 0.56);
+    &:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+  &[disabled] {
+    cursor: not-allowed;
+    color: #adaeb6;
+  }
+}
+
+.icon {
+  transform: translate3d(-100%, 0, 0);
+}
