@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { input, icon } from './Input.module.scss';
 
-import Icon from 'components/Icon/Icon'
+import Icon from 'components/UI/Icon/Icon'
 
 const Input = ({type, state, visible, text, ...restProps}) => {
   const inputClassCompose = classNames(
