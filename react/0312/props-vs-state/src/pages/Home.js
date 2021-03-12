@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
-
 import App from 'app/App'
+
+const groupMessage = id => {
+  console.groupCollapsed(id);
+  const targetNode = document.querySelector('.App-header g');
+  console.log(targetNode);
+  console.groupEnd(id);
+
+  return targetNode;
+};
 
 export default class Home extends Component {
   constructor(props) {
     super(props)
     console.log('나(Home)는 지금 태어났습니다.');
+
+    groupMessage('contructor')
   }
   state = {
     logo: {
@@ -20,6 +30,7 @@ export default class Home extends Component {
   render() {
     const {logo, message, link} = this.state
     console.log('나(Home)는 지금 그려집니다.')
+    groupMessage('render')
     return (
       <App logo={logo} renderMessage={message} link={link} />
     )
@@ -28,20 +39,12 @@ export default class Home extends Component {
   // 라이프 사이클 (삶의 주기)
   // 그려진 이후 나(component)의 모습
   componentDidMount() {
-    console.log('나는 실제 DOM에 마운트(장착)된 이후입니다.');
-    const newState = {
-      logo: {
-        label: '리액트!!!! '
-      }
-    };
-    const callBack = () => {
-      // 상태가 업데이트 된 이후 실행을 보장받는다..!
-      console.log('React!! 상태가 업뎃 되었네~')
-    }
-    window.setTimeout(() => {
-      console.log('나는 2초 뒤에 뭔가 한다.')
-      this.setState(newState, callBack)
-
-    }, 2000);
+    const targetNode = groupMessage('componentDidMount');
+    targetNode.style.transition = 'all 5s';
+    setTimeout(() => {
+      targetNode.setAttribute('fill', 'tomato');
+    }, 1000);
   }
+  
+  
 }
