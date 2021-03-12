@@ -1,0 +1,13 @@
+$border-color: #ccc;
+$border-error: #e52528;
+
+.signInput {
+  display: flex;
+  position: relative;
+  width: 340px;
+  border: 1px solid $border-color;
+}
+
+.error {
+  border: 1px solid $border-error;
+}
