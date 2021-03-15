@@ -1,4 +1,4 @@
-import {right} from './Icon.module.scss';
+import {right, icon} from './Icon.module.scss';
 import classNames from 'classnames';
 import {ReactComponent as Email} from 'assets/Icon/email.svg'
 import {ReactComponent as Password} from 'assets/Icon/password.svg'
@@ -28,12 +28,13 @@ const Icon = ({type, ...restProps}) => {
   }
 
   const classCompose = classNames(
+    icon,
     pos === 'right' && right
   );
 
   return (
     <div className={classCompose}>
-      <Comp {...restProps} />
+      <Comp {...restProps} style={{width: '100%', height: '100%'}}/>
     </div>
   )
 }
