@@ -1,0 +1,43 @@
+$fontWeight: 400;
+$fontFamily: 'Noto Sans';
+$fontSize: 14px;
+$lineHeight: 19px;
+$borderColor: #ccc;
+$backgroundcolor: #f4f4f4;
+$checkedColor: #0074e9;
+$disabledColor: #aaa9a9;
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+
+  width: 99px;
+  height: 24px;
+}
+
+.checkbox {
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background-color: $backgroundcolor;
+  border: 1px solid $borderColor;
+  margin: 0;
+  margin-right: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.labelDisabled {
+  color: $disabledColor;
+}
+
+.checkboxLabel {
+  width: 69px;
+  height: 19px;
+  letter-spacing: -2px;
+  font-weight: $fontWeight;
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  line-height: $lineHeight;
+}
