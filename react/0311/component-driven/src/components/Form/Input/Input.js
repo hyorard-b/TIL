@@ -11,6 +11,8 @@ const Input = ({type, visible, placeHolder, iconType, ...restProps}) => {
   if (type === 'password') {
     iconType = visible ? 'show' : 'hide';
     placeHolder = '비밀번호';
+  } else {
+    visible = true;
   }
   
   type = visible ? 'text' : 'password';

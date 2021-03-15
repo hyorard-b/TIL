@@ -17,25 +17,25 @@ export const SecondaryDisabled = Template.bind({});
 
 
 Primary.args = {
-  children: '버튼',
+  content: '버튼',
   state: 'primary',
   disabled: false
 }
 
 PrimaryDisabled.args = {
-  children: '버튼',
+  content: '버튼',
   state: 'primary',
   disabled: true
 }
 
 Secondary.args = {
-  children: '버튼',
+  content: '버튼',
   state: 'secondary',
   disabled: false
 }
 
 SecondaryDisabled.args = {
-  children: '버튼',
+  content: '버튼',
   state: 'secondary',
   disabled: true
 }

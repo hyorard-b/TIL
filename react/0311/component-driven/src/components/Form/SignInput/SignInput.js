@@ -45,4 +45,8 @@ const SignInput = ({hasError, type, ...restProps}) => {
   )
 };
 
+SignInput.args = {
+  state: 'normal',
+};
+
 export default SignInput;
