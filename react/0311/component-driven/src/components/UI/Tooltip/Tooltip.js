@@ -1,7 +1,7 @@
 import {tooltip} from './Tooltip.module.scss';
 import classNames from 'classnames';
 
-const Tooltip = ({content, orientation, ...restProps}) => {
+const ToolTip = ({content, orientation, ...restProps}) => {
   const classCompose = classNames(
     tooltip
   );
@@ -13,4 +13,8 @@ const Tooltip = ({content, orientation, ...restProps}) => {
   )
 };
 
-export default Tooltip;
+ToolTip.defaultProps = {
+  content: "개인 정보 보호를 위해 본인 기기에서만 이용해주세요"
+}
+
+export default ToolTip;
