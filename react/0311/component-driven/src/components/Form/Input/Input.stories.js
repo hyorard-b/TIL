@@ -29,7 +29,7 @@ export default {
         options: ['default', 'true', 'false']
       }
     },
-    text: {
+    value: {
       control:{
         type: 'text'
       }
@@ -48,32 +48,28 @@ export const InputedPasswordVisible = Template.bind({});
 NormalEmail.args = {
   type: 'email',
   state: 'normal',
-  visible: 'default'
 }
 
 InputedEmail.args = {
   type: 'email',
   state: 'inputed',
-  visible: 'default',
-  text: 'hyorard08@'
+  value: 'hyorard08@'
 }
 
 NormalPassword.args = {
   type: 'password',
   state: 'normal',
-  visible: 'default'
 }
 
 InputedPassword.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'false',
-  text: 'best midfielder'
+  value: 'best midfielder'
 }
 
 InputedPasswordVisible.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'true',
-  text: 'best midfielder'
+  visible: true,
+  value: 'best midfielder'
 }

@@ -1,41 +1,40 @@
 import classNames from 'classnames';
-import { input, icon } from './Input.module.scss';
+import { container, input, icon } from './Input.module.scss';
 
 import Icon from 'components/UI/Icon/Icon'
 
-const Input = ({type, state, visible, text, ...restProps}) => {
-  const inputClassCompose = classNames(
-    input,
-  );
-
-  const iconClassCompose = classNames(
-    icon,
-  )
-
-  let inputType = null;
-  let placeHolder = null;
-  let iconType = null;
+const Input = ({type, visible, placeHolder, iconType, ...restProps}) => {
+  const containerClassCompose = classNames(container);
+  const inputClassCompose = classNames(input);
+  const iconClassCompose = classNames(icon);
 
   if (type === 'password') {
-    inputType = visible === 'true' ? 'text' : 'password'
-    iconType = visible === 'true' ? 'show' : 'hide'
-    placeHolder = '비밀번호'
-  } else {
-    inputType = 'text'
-    placeHolder = '아이디(이메일)'
+    iconType = visible ? 'show' : 'hide';
+    placeHolder = '비밀번호';
   }
+  
+  type = visible ? 'text' : 'password';
 
   return (
-    <>
-      <input 
-        type={inputType} 
+    <div className={containerClassCompose}>
+      <input
+        type={type}
         placeholder={placeHolder} 
-        value={text} {...restProps}
         className={inputClassCompose}
+        {...restProps}
       />
-        {iconType && <Icon type={iconType} className={iconClassCompose}></Icon>}
-    </>
+      <div className={iconClassCompose}>
+        {iconType && <Icon type={iconType}></Icon>}
+      </div>
+    </div>
   )
 };
+
+Input.defaultProps = {
+  visible: false,
+  type: 'email',
+  inputType: 'text',
+  placeHolder: '아이디(이메일)',
+}
 
 export default Input;
