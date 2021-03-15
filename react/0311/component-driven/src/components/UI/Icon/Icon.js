@@ -27,12 +27,9 @@ const Icon = ({type, ...restProps}) => {
       break;
   }
 
-
   const classCompose = classNames(
     pos === 'right' && right
   );
-
-  console.log(classCompose);
 
   return (
     <div className={classCompose}>
