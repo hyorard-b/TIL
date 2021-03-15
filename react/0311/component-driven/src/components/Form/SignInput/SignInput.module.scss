@@ -1,5 +1,17 @@
 $border-color: #ccc;
-$border-error: #e52528;
+$normal-font-size: 16px;
+$normal-font-color: #111;
+$error-font-size: 15px;
+$font-weight: 500;
+$error-color: #e52528;
+
+.signInputContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: $normal-font-size;
+  font-weight: $font-weight;
+  color: $normal-font-color;
+}
 
 .signInput {
   display: flex;
@@ -9,5 +21,11 @@ $border-error: #e52528;
 }
 
 .error {
-  border: 1px solid $border-error;
+  border: 1px solid $error-color;
+}
+
+.errorMsg {
+  margin: 10px 0 0 11px;
+  font-size: $error-font-size;
+  color: $error-color;
 }

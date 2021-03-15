@@ -26,16 +26,16 @@ export default {
     visible: {
       control: {
         type: 'select',
-        options: ['default', 'true', 'false']
+        options: [true, false]
       }
     },
     hasError: {
       control: {
         type: 'select',
-        options: ['default', 'true']
+        options: [true, false]
       }
     },
-    text: {
+    value: {
       control:{
         type: 'text'
       }
@@ -59,70 +59,62 @@ export const InputedVisibleErrorPassword = Template.bind({});
 NormalEmail.args = {
   type: 'email',
   state: 'normal',
-  visible: 'default',
 }
 
 InputedEmail.args = {
   type: 'email',
   state: 'inputed',
-  visible: 'default',
-  text: 'hyorard08@'
+  value: 'hyorard08@'
 }
 
 NormalErrorEmail.args = {
   type: 'email',
   state: 'normal',
-  visible: 'default',
   hasError: true
 }
 
 InputedErrorEmail.args = {
   type: 'email',
   state: 'inputed',
-  visible: 'default',
   hasError: true,
-  text: 'hyorard08@'
+  value: 'hyorard08@'
 }
 
 NormalPassword.args = {
   type: 'password',
   state: 'normal',
-  visible: 'default',
 }
 
 InputedPassword.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'default',
-  text: 'this is password'
+  value: 'this is password'
 }
 
 NormalErrorPassword.args = {
   type: 'password',
   state: 'normal',
-  visible: 'default',
   hasError: true
 }
 
 InputedErrorPassword.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'default',
   hasError: true,
-  text: 'this is password'
+  value: 'this is password'
 }
 
 InputedVisibleErrorPassword.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'true',
+  visible: true,
   hasError: true,
-  text: 'this is password'
+  value: 'this is password'
 }
 
 InputedVisiblePassword.args = {
   type: 'password',
   state: 'inputed',
-  visible: 'true',
-  text: 'this is password'
+  visible: true,
+  value: 'this is password'
 }
