@@ -1,0 +1,38 @@
+$findInfoFont: normal 18px 400;
+$findRightFont: normal 14px 400;
+$fontFamily: 'Noto Sans';
+
+.signInContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 575px;
+  margin: 108px auto 105px;
+}
+
+.subSignIn {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 13px;
+}
+
+.findInfo {
+  font: $findInfoFont;
+  font-family: $fontFamily;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border: none;
+  background-color: #ccc;
+  margin-bottom: 22px;
+}
+
+.rights {
+  font-family: $fontFamily;
+  font: $findRightFont;
+  color: #555;
+}
