@@ -1,0 +1,13 @@
+.link {
+  color: #7f43c4;
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 5px rgba(86, 0, 121, 0.4);
+
+    &:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+}
