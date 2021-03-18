@@ -1,0 +1,17 @@
+.heading {
+}
+
+.a {
+  text-decoration: none;
+  color: inherit;
+
+  svg {
+    pointer-events: none; // 이벤트 전파에서 문제가 생기는 경우가 있는데, 방지하기 위함
+    // ?
+  }
+
+  img {
+    border: 0;
+    vertical-align: middle;
+  }
+}
