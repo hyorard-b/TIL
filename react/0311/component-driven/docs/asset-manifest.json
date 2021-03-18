@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "./static/css/main.58d7787a.chunk.css",
+    "main.js": "./main.7d6dca610dd2b8fe82c0.bundle.js",
+    "main.css.map": "./static/css/main.58d7787a.chunk.css.map",
+    "main.js.map": "./main.7d6dca610dd2b8fe82c0.bundle.js.map",
+    "runtime~main.js": "./runtime~main.7d6dca610dd2b8fe82c0.bundle.js",
+    "runtime~main.js.map": "./runtime~main.7d6dca610dd2b8fe82c0.bundle.js.map",
+    "vendors~main.js": "./vendors~main.7d6dca610dd2b8fe82c0.bundle.js",
+    "vendors~main.js.map": "./vendors~main.7d6dca610dd2b8fe82c0.bundle.js.map",
+    "iframe.html": "./iframe.html",
+    "static/media/Checked.61e78e13.svg": "./static/media/Checked.61e78e13.svg",
+    "static/media/DisabledChecked.3625f0b9.svg": "./static/media/DisabledChecked.3625f0b9.svg",
+    "static/media/black.03c91b31.svg": "./static/media/black.03c91b31.svg",
+    "static/media/colorful.a0665aaf.svg": "./static/media/colorful.a0665aaf.svg",
+    "static/media/email.dbf316fc.svg": "./static/media/email.dbf316fc.svg",
+    "static/media/hide.0f95cd5a.svg": "./static/media/hide.0f95cd5a.svg",
+    "static/media/mono.38db675e.svg": "./static/media/mono.38db675e.svg",
+    "static/media/password.1c3aba96.svg": "./static/media/password.1c3aba96.svg",
+    "static/media/show.add58af7.svg": "./static/media/show.add58af7.svg",
+    "vendors~main.7d6dca610dd2b8fe82c0.bundle.js.LICENSE.txt": "./vendors~main.7d6dca610dd2b8fe82c0.bundle.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "runtime~main.7d6dca610dd2b8fe82c0.bundle.js",
+    "vendors~main.7d6dca610dd2b8fe82c0.bundle.js",
+    "static/css/main.58d7787a.chunk.css",
+    "main.7d6dca610dd2b8fe82c0.bundle.js"
+  ]
+}
