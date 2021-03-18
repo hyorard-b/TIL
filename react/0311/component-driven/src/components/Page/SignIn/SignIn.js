@@ -6,6 +6,7 @@ import Logo from 'components/UI/Logo/Logo';
 import SignInput from 'components/Form/SignInput/SignInput';
 import AutoSignInCheckbox from 'components/Form/AutoSignInCheckbox/AutoSignInCheckbox';
 import Button from 'components/Form/Button/Button';
+import Copyright from 'components/UI/Copyright/Copyright';
 
 const SignIn = ({state, ...restProps}) => {
   const SignInContainerClass = classNames(signInContainer)
@@ -58,9 +59,7 @@ const SignIn = ({state, ...restProps}) => {
         <div className={LineClass}></div>
         <Button content='회원가입' state='secondary'/>
       </form>
-      <div>
-        &copy;Coupang Corp. All rights reserved.
-      </div>
+      <Copyright />
     </div>
   )
 };
