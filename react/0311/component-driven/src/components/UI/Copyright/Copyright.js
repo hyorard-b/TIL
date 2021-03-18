@@ -9,4 +9,6 @@ const Copyright = ({}) => {
   )
 };
 
+Copyright.displayName = '저작권';
+
 export default Copyright;

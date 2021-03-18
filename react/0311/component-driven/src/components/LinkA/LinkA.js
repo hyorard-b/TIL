@@ -1,4 +1,4 @@
-import { string, bool } from "prop-types";
+import { string, bool, object } from "prop-types";
 import { link } from './LinkA.module.scss';
 
 
@@ -14,7 +14,7 @@ const LinkA = ({
 }) => {
   const target = isExternal ? '_blank' : null;
   const rel = isExternal ? 'noopener noreferrer' : null;
-  const combineClassName = `${link} ${className}`;
+  const combineClassName = `${link} ${className}`.trim();
   const combineStyle = {
     ...style,
     color: fgColor,
@@ -28,12 +28,17 @@ const LinkA = ({
   )
 }
 LinkA.defaultProps = {
+  href: '/storage',
   isExternal: false,
+  className: '',
+  style: {},
 };
 
 LinkA.propTypes = {
   href: string.isRequired,
   isExternal: bool,
+  className: string,
+  style: object
 }
 
 export default LinkA;
