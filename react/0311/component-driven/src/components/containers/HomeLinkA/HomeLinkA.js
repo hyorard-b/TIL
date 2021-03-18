@@ -1,16 +1,31 @@
-import { heading, a } from './HomeLinkA.module.scss'
+// import { heading, a } from './HomeLinkA.module.scss';
 
-const HomeLinkA = ({ lang, href, className, style, children, ...restProps }) => (
-  <h1 lang={lang} className={heading}>
-    <a className={a} href={href}>
+import Heading from 'components/Heading/Heading';
+import LinkA from 'components/LinkA/LinkA';
+import { node, number, object, oneOfType, string } from 'prop-types';
+
+const HomeLinkA = ({ level, lang, href, className, style, children, headingProps, linkAProps, ...restProps }) => (
+  <Heading level={level} lnag={lang} {...headingProps}>
+    <LinkA href={href} {...linkAProps}>
       {children}
-    </a>
-  </h1>
+    </LinkA>
+  </Heading>
 );
 
 HomeLinkA.defaultProps = {
+  level: 1,
   lang: 'ko-KR',
   href: '/',
+};
+
+HomeLinkA.propTypes = {
+  level: oneOfType([number, string]),
+  lang: string,
+  href: string,
+  children: node,
+  headingProps: object,
+  linkAProps: object,
+  style: object,
 };
 
 export default HomeLinkA;
