@@ -1,16 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+const { localStorage: storage } = window;
+const EMAIL_STATE_IN_STORAGE = 'email';
 
 export default function GreetingEmail({ initialEmail = 'yamoo9@euid.dev' }) {
   // 컴포넌트 상태를 localStorage에서 가져옵니다.
   // localStorage에 해당 값이 없을 경우, initialEmail 값으로 초기화 합니다.
 
-  const [email, setEmail] = useState(initialEmail)
+  const [email, setEmail] = useState(() => {
+    let returnValue = storage.getItem(EMAIL_STATE_IN_STORAGE) ?? initialEmail;
+
+    return returnValue;
+  });
+
+  useEffect(() => {
+    storage.setItem(EMAIL_STATE_IN_STORAGE, email);
+  });
 
   // React.useEffect() 훅을 사용합니다.
   // 사이드 이펙트 콜백 함수의 localStorage에 `email`을 설정합니다.
 
-  const handleChange = (e) => setEmail(e.target.value)
-  const handleFocus = (e) => e.target.select()
+  const handleChange = (e) => setEmail(e.target.value);
+  const handleFocus = (e) => e.target.select();
 
   return (
     <div>
