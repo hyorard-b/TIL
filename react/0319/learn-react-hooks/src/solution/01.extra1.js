@@ -1,9 +1,13 @@
-export default function GreetingEmail() {
+import {useState} from 'react'
+
+export default function GreetingEmail({initialEmail}) {
   // 아래 email 변수 선언을 삭제하고 React.useState() 훅으로 변경해봅니다.
-  const email = ''
+  const [email, setEmail] = useState(initialEmail ?? '');
 
   const handleChange = (e) => {
     // email 상태 변수 값을 업데이트 해봅니다.
+    const updateValue = e.target.value;
+    setEmail(updateValue);
   }
 
   return (
