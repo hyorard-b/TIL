@@ -57,10 +57,10 @@ const SetSearchState = createContext(null);
 export function MoviesProvider({ children }) {
   const [state, dispatch] = useReducer(MovieReducer, initialState);
   const [search, setSearch] = useState({
-    quality: '',
-    minumumRating: 5,
-    queryTerm: '',
-    genre: '',
+    quality: null,
+    minumumRating: null,
+    queryTerm: null,
+    genre: null,
   })
 
   return (
@@ -108,21 +108,24 @@ export function useSetSearch() {
   return setSearch;
 }
 
-export async function getMovies(dispatch, params) {
+export async function GetMovies(dispatch) {
   dispatch({
     type: 'GET_MOVIES'
   });
 
-  const { quality, minimumRating, queryTerm, genre } = params;
+  // const { quality, minimumRating, queryTerm, genre } = params;
+
+  const state = useContext(SearchState);
+  const { quality, minimumRating, queryTerm, genre } = state;
+
+  const qParam = quality ? `quality=${quality}&` : '';
+  const mParam = minimumRating ? `minimum_rating=${minimumRating}&` : '';
+  const tParam = queryTerm ? `query_term=${queryTerm}&` : '';
+  const gParam = genre ? `genre=${genre}` : '';
 
   try {
     const response = await axios.get(
-      `https://yts.mx/api/v2/list_movies.json
-        ?quality=${quality}
-        &minumum_rating=${minimumRating}
-        &query_term=${queryTerm}
-        &genre=${genre}
-      `);
+      `https://yts.mx/api/v2/list_movies.json?${qParam+mParam+tParam+gParam}`);
     
     dispatch({
       type: 'GET_MOVIES_SUCCESS',
