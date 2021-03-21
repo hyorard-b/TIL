@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import axios from 'axios';
 
 const initialState = {
@@ -51,15 +51,27 @@ function MovieReducer(state, action) {
 
 const MoviesState = createContext(null);
 const MoviesDispatch = createContext(null);
+const SearchState = createContext(null);
+const SetSearchState = createContext(null);
 
 export function MoviesProvider({ children }) {
   const [state, dispatch] = useReducer(MovieReducer, initialState);
+  const [search, setSearch] = useState({
+    quality: '',
+    minumumRating: 5,
+    queryTerm: '',
+    genre: '',
+  })
 
   return (
     <MoviesState.Provider value={state}>
-      <MoviesDispatch value={dispatch}>
-        {children}
-      </MoviesDispatch>
+      <MoviesDispatch.Provider value={dispatch}>
+        <SearchState.Provider value={search}>
+          <SetSearchState.Provider value={setSearch}>
+            {children}
+          </SetSearchState.Provider>
+        </SearchState.Provider>
+      </MoviesDispatch.Provider>
     </MoviesState.Provider>
   )
 }
@@ -78,6 +90,22 @@ export function useMoviesDispatch() {
   if (!dispatch) throw new Error('Cannot find MoviesDispatch Provider');
 
   return dispatch;
+}
+
+export function useSearchState() {
+  const state = useContext(SearchState);
+
+  if (!state) throw new Error('Cannot find SearchState Provider');
+
+  return state;
+}
+
+export function useSetSearch() {
+  const setSearch = useContext(SetSearchState);
+
+  if (!setSearch) throw new Error('Cannot find SetSearch Provider');
+
+  return setSearch;
 }
 
 export async function getMovies(dispatch, params) {
