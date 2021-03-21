@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useSearchState, useSetSearch, GetMovies } from '../hooks/movieContext';
-import { useMoviesDispatch } from './../hooks/MovieContext';
+// import { useSearchState, useSetSearch, GetMovies } from '../hooks/movieContext';
+import { useMoviesDispatch, useSearchState, useSetSearch, GetMovies } from './../hooks/MovieContext';
 
 export function SearchMovie() {
-  const searchState = useSearchState;
-  const setSearch = useSetSearch;
-  const dispatch = useMoviesDispatch;
+  const searchState = useSearchState();
+  const setSearch = useSetSearch();
+  const dispatch = useMoviesDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -33,7 +33,7 @@ export function SearchMovie() {
       <input type="text" name="queryTerm" placeholder="영화 제목, 배우 ..." onChange={handleChange} />
       <span>장르</span>
       <input type="text" name="genre" placeholder="action" onChange={handleChange} />
-      <button onClick={() => GetMovies(dispatch)}>검색하기</button>
+      <button onClick={() => GetMovies(dispatch, searchState)}>검색하기</button>
     </>
   )
 }
