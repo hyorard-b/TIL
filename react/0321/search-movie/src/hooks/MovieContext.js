@@ -34,10 +34,10 @@ function MovieReducer(state, action) {
         ...state,
         movies: loadingState
       }
-    case 'GET_MOVIES_SUCCES':
+    case 'GET_MOVIES_SUCCESS':
       return {
         ...state,
-        moveis: success(action.data)
+        movies: success(action.data)
       }
     case 'GET_MOVIES_ERROR':
       return {
@@ -58,7 +58,7 @@ export function MoviesProvider({ children }) {
   const [state, dispatch] = useReducer(MovieReducer, initialState);
   const [search, setSearch] = useState({
     quality: null,
-    minumumRating: null,
+    minimumRating: null,
     queryTerm: null,
     genre: null,
   })
@@ -108,28 +108,33 @@ export function useSetSearch() {
   return setSearch;
 }
 
-export async function GetMovies(dispatch) {
+export async function GetMovies(dispatch, searchState) {
   dispatch({
     type: 'GET_MOVIES'
   });
 
   // const { quality, minimumRating, queryTerm, genre } = params;
 
-  const state = useContext(SearchState);
-  const { quality, minimumRating, queryTerm, genre } = state;
+  const { quality, minimumRating, queryTerm, genre } = searchState;
+
+  console.log(quality, minimumRating, queryTerm, genre);
 
   const qParam = quality ? `quality=${quality}&` : '';
   const mParam = minimumRating ? `minimum_rating=${minimumRating}&` : '';
   const tParam = queryTerm ? `query_term=${queryTerm}&` : '';
   const gParam = genre ? `genre=${genre}` : '';
 
+  const url = `https://yts.mx/api/v2/list_movies.json?${qParam + mParam + tParam + gParam}`;
+  console.log(url);
   try {
-    const response = await axios.get(
-      `https://yts.mx/api/v2/list_movies.json?${qParam+mParam+tParam+gParam}`);
+    const {data: res} = await axios.get(url);
     
+    console.log(res.data.movies);
+
+    const movies = res.data.movies.map(({ title_long, summary, large_cover_image, rating, runtime }) => ({ title_long, summary, large_cover_image, rating, runtime }));
     dispatch({
       type: 'GET_MOVIES_SUCCESS',
-      data: response.data,
+      data: movies
     })
   } catch (e) {
     dispatch({
