@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 
 const { localStorage: storage } = window;
+const SQUARE_KEY = 'squares';
 /* -------------------------------------------------------------------------- */
 /*                                     말판                                    */
 /* -------------------------------------------------------------------------- */
@@ -79,18 +81,27 @@ function Board({serialize = JSON.stringify, deserialize = JSON.parse} = {}) {
 
   // squares는 컴포넌트의 상태입니다. React.useState() 훅을 사용해 상태 관리합니다.
   const [squares, setSquares] = useState(() => {
-    const savedSquares = storage.getItem('squares');
+    const savedSquares = storage.getItem(SQUARE_KEY);
 
     if (savedSquares) return deserialize(savedSquares);
 
     return INITIAL_SQUARES;
   });
 
+  const prevKeyRef = useRef();
+
   useEffect(() => {
-    storage.setItem('squares', serialize(squares));
+    const prevKey = prevKeyRef.current;
+
+    if (prevKey !== SQUARE_KEY) {
+      storage.removeItem(prevKey);
+
+      prevKeyRef.current = SQUARE_KEY;
+    }
+    storage.setItem(SQUARE_KEY, serialize(squares));
   }, [squares, serialize, deserialize]);
 
-  
+
   const nextValue = calcNextValue(squares);
   const winner = calcWinner(squares);
   const status = calcStatus(winner, squares, nextValue);
