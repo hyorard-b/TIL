@@ -1,4 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+
+/* -------------------------------------------------------------------------- */
+/*                                     말판                                    */
+/* -------------------------------------------------------------------------- */
+const INITIAL_SQUARES = Array(9).fill(null);
 
 /* 게임 상수 -------------------------------------------------------------------- */
 const SQUARE_VALUES = {
@@ -71,7 +77,10 @@ function Board() {
   /* 일반 상태 -------------------------------------------------------------------- */
 
   // squares는 컴포넌트의 상태입니다. React.useState() 훅을 사용해 상태 관리합니다.
-  const squares = Array(9).fill(null)
+  const [squares, setSquares] = useState(INITIAL_SQUARES);
+  const nextValue = calcNextValue(squares);
+  const winner = calcWinner(squares);
+  const status = calcStatus(winner, squares, nextValue);
 
   /* 파생 상태 -------------------------------------------------------------------- */
 
@@ -92,19 +101,26 @@ function Board() {
   const selectSquare = (squareIndex) => {
     // 0. 게임 종료 또는 클릭한 게임 보드의 스퀘어 값이 채워진 경우, 상태 변경을 중단해야 합니다.
     //
+    if (squares[squareIndex] || winner) return;
+
     // React 프로그래밍에서 컴포넌트의 상태를 직접 변경하는 것은 문제를 유발합니다.
     // 그러므로 squares 상태를 복사한 후, 변경하는 것이 좋습니다.
     //
     // 1. squares 상태를 복사합니다. (배열 복제)
     //
+    const squaresCopy = [...squares];
     // 2. 선택된 스퀘어의 값을 복사한 sqauresCopy의 squareIndex에 설정합니다. (배열[인덱스] = 값)
     //
+    squaresCopy[squareIndex] = nextValue;
     // 3. 복사, 변경된 squaresCopy를 squares 상태로 업데이트 합니다. (setState(업데이트 된 값))
+
+    setSquares(squaresCopy);
   }
 
   const restart = () => {
     // 게임 보드의 squares 상태를 초기화 합니다.
     //
+    setSquares(INITIAL_SQUARES);
   }
 
   const renderSquare = (index) => (
@@ -120,7 +136,7 @@ function Board() {
   return (
     <>
       {/* 아래 div.status 요소에 상황 별 상태 메시지가 출력되도록 설정합니다. */}
-      <div className="info__status">현재 상황 메시지</div>
+      <div className="info__status">{status}</div>
 
       <div className="board__row">
         {renderSquare(0)}
