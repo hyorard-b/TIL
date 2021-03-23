@@ -4,25 +4,18 @@ const { localStorage: storage } = window
 
 /* -------------------------------------------------------------------------- */
 
-// 커스텀 훅 useLocalStorageState() 훅 정의
-function useLocalStorageState(key, initialValue = '') {
-  // 지연된 초기화
-  const [state, setState] = useState(() => {
-    return storage.getItem(key) ?? initialValue
-  })
-
-  useEffect(() => {
-    storage.setItem(key, state)
-  }, [key, state])
-
-  return [state, setState]
-}
-
-/* -------------------------------------------------------------------------- */
-
 export default function GreetingEmail({ initialEmail = 'yamoo9@euid.dev' }) {
-  // 커스텀 훅 useLocalStorageState() 훅 사용
-  const [email, setEmail] = useLocalStorageState('email', initialEmail)
+  const [email, setEmail] = useState(
+    () => storage.getItem('email') ?? initialEmail
+  )
+
+  useEffect(
+    () => {
+      storage.setItem('email', email)
+    },
+    // 의존성 배열 설정
+    [email]
+  )
 
   const handleChange = (e) => setEmail(e.target.value)
   const handleFocus = (e) => e.target.select()
@@ -34,8 +27,8 @@ export default function GreetingEmail({ initialEmail = 'yamoo9@euid.dev' }) {
         <input
           id="email"
           type="email"
-          value={email}
           onChange={handleChange}
+          value={email}
           onFocus={handleFocus}
         />
       </form>

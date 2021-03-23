@@ -1,28 +1,18 @@
-import { useState, useEffect } from 'react'
-
-const { localStorage: storage } = window
-
-/* -------------------------------------------------------------------------- */
-
-// 커스텀 훅 useLocalStorageState() 훅 정의
-function useLocalStorageState(key, initialValue = '') {
-  // 지연된 초기화
-  const [state, setState] = useState(() => {
-    return storage.getItem(key) ?? initialValue
-  })
-
-  useEffect(() => {
-    storage.setItem(key, state)
-  }, [key, state])
-
-  return [state, setState]
-}
+// import { useState, useEffect } from 'react'
+import { useLocalStorageState } from '../hooks/useLocalStorage'
 
 /* -------------------------------------------------------------------------- */
+
+let count = 1000000000
 
 export default function GreetingEmail({ initialEmail = 'yamoo9@euid.dev' }) {
   // 커스텀 훅 useLocalStorageState() 훅 사용
-  const [email, setEmail] = useLocalStorageState('email', initialEmail)
+  const [email, setEmail] = useLocalStorageState('email', () => {
+    // 복잡한 연산(계산) 처리 후에.... (시간 지연...)
+    while (count-- > 0) {}
+    // 초깃값을 반환
+    return initialEmail
+  })
 
   const handleChange = (e) => setEmail(e.target.value)
   const handleFocus = (e) => e.target.select()
