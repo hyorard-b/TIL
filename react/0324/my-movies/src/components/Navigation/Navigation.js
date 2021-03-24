@@ -1,4 +1,6 @@
 import { container, active } from './Navigation.module.scss'
+import { Link } from 'react-router-dom'
+
 
 /* -------------------------------------------------------------------------- */
 
@@ -7,12 +9,12 @@ export default function Navigation({ children }) {
     <nav className={container} aria-label="글로벌 내비게이션">
       <ul>
         <li>
-          <a href="/movies" className={active}>
+          <Link to="/movies" className={active}>
             Movies
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/bookmark">Bookmark</a>
+          <Link to="/bookmark">Bookmark</Link>
         </li>
       </ul>
       {children}

@@ -15,9 +15,9 @@ import {
 
 const { idle, pending, rejected, resolved } = STATUS
 
-export default function MovieDetailPage(props) {
-  // props → ID: 596247, 527774, 464052, 399566
-  const [status, error, json] = useFetchData(tmdb.getDetail(399566))
+export default function MovieDetailPage({ match }) {
+  const movieId = match.params.id;
+  const [status, error, json] = useFetchData(tmdb.getDetail(movieId))
 
   if (status === idle) {
     return null
