@@ -47,14 +47,11 @@ export default function MovieDetailPage({ match }) {
   const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id));
 
   useEffect(() => {
-    console.log(checkBookmark)
     console.log(details);
   }, [checkBookmark, details]);
 
   const handleClick = () => {
     setCheckBookmark(!checkBookmark);
-
-    console.log(createBookmark, deleteBookmark);
     
     dispatch(!checkBookmark ? createBookmark(json) : deleteBookmark(json));
   }
