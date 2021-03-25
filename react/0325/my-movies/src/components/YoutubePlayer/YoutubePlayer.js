@@ -1,4 +1,5 @@
 // 참고: https://www.npmjs.com/package/react-youtube
+import { useEffect, useRef } from 'react'
 import YouTube from 'react-youtube'
 
 /* -------------------------------------------------------------------------- */
@@ -23,17 +24,46 @@ const opts = {
 /* -------------------------------------------------------------------------- */
 
 export default function YoutubePlayer({ videoId, options = {}, ...restProps }) {
+  const youtubeRef = useRef(null);
+
+  useEffect(() => {
+    const player = youtubeRef.current.getInternalPlayer();
+
+    const handleKeyUp = e => {
+      const key = e.keyCode;
+
+      if (key === 27) {
+        player.pauseVideo();
+      }
+      if (key === 32 || key === 13) {
+        player.playVideo();
+      }
+    };
+
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp);
+    }
+  }, [])
+
   options = { ...opts, ...options }
 
-  const _onReady = (e) => {
+  const handleReady = (e) => {
     e.target.mute()
   }
 
+  const handleEnd = e => {
+    e.target.playVideo();
+  };
+
   return (
     <YouTube
+      ref={youtubeRef}
       opts={options}
       videoId={videoId}
-      onReady={_onReady}
+      onReady={handleReady}
+      onEnd={handleEnd}
       {...restProps}
     />
   )
