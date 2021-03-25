@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { tmdb } from 'api'
 import { useFetchData, STATUS } from 'hooks'
 import { Effects, YoutubePlayer } from 'components'
@@ -28,26 +28,18 @@ import {
 // ]
 const initialBookmark = []
 
-// 북마크 리듀서 (순수) 함수
-// state, action
-function bookmarkReducer(state, action /* { type } */) {
-  // 북마크 리듀서가 하는 일??
-  // 쓰기(create), 수정(update), 제거(delete)
+function bookmarkReducer(state, action) {
   switch (action.type) {
     case 'create':
-      return [...state, action.payload /* { bookmark object } */]
+      return [...state, action.payload]
     case 'update':
       return state.map((bookmark) => {
         return bookmark.id === action.payload.id
-          ? action.payload /* { bookmark object } */
+          ? action.payload 
           : bookmark
       })
     case 'delete':
-      return state.filter(({ id }) => id !== action.payload /* id */)
-    // 북마크 리듀서에서 상태를 다른 유형으로 변형을 가하면 안되므로 읽기(read)는 제외 합니다.
-    // return state.find(({ id }) => id === action.payload /* id */)
-    // 읽기를 시도할 경우, 현재 상태를 반환하도록 설정합니다.
-    // 읽기 id
+      return state.filter(({ id }) => id !== action.payload)
     case 'read':
     default:
       return state
@@ -63,11 +55,33 @@ function bookmarkReducer(state, action /* { type } */) {
 const { idle, pending, rejected, resolved } = STATUS
 
 export default function MovieDetailPage({ match }) {
-  React.useReducer(bookmarkReducer, initialBookmark)
+  const [details, dispatch] = React.useReducer(bookmarkReducer, initialBookmark);
 
   // props → ID: 596247, 527774, 464052, 399566
-  const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id))
+  const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id));
 
+  useEffect(() => {
+    console.log(details);
+  }, [details]);
+
+  useEffect(() => {
+    if (json) {
+      const { id, title, tagline, overview, poster, homepage } = json;
+      dispatch({
+        type: 'create',
+        payload: {
+          id,
+          title,
+          tagline,
+          overview,
+          poster,
+          homepage
+        }
+      });
+    }
+  }, [json]);
+
+  
   if (status === idle) {
     return null
   }
@@ -82,8 +96,21 @@ export default function MovieDetailPage({ match }) {
 
   if (status === resolved) {
     // 무비 정보
-    // console.log(json)
 
+    /* dispatch({
+      type: 'create',
+      payload: json
+    }) */
+
+    /* json && dispatch({
+      type: 'create',
+      payload: json
+    }) */
+    /* json && dispatch({
+      type: 'create',
+      payload: json
+    })
+ */
     // backdrop_path
     // poster_path
     // genres
