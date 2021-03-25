@@ -10,12 +10,33 @@ import {
   tagline,
   overview,
 } from './Movie.module.scss'
+import { useReducer } from 'react'
 
 /* -------------------------------------------------------------------------- */
+
+const initialBookmark = [];
+
+function bookmarkReducer(state, action) {
+  switch (action.type) {
+    case 'CREATE':
+      return [...state, action.payload]
+    case 'READ':
+      return state.find(({id}) => id === action.payload)
+    case 'UPDATE':
+      return action.payload
+    case 'DELETE':
+      return action.payload
+    default:
+      return state
+  }
+}
+
+
 
 const { idle, pending, rejected, resolved } = STATUS
 
 export default function MovieDetailPage({ match }) {
+  useReducer(bookmarkReducer, initialBookmark);
   const movieId = match.params.id;
   const [status, error, json] = useFetchData(tmdb.getDetail(movieId))
 
