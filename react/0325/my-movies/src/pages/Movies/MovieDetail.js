@@ -3,6 +3,7 @@ import { tmdb } from 'api'
 import { useFetchData, STATUS } from 'hooks'
 import { Effects, YoutubePlayer, BookmarkButton } from 'components'
 import { Helmet } from 'react-helmet-async'
+import { useBookmarkList, useBookmarkDispatch, createBookmark, deleteBookmark } from 'hooks/useBookmarks';
 import {
   container,
   videoTrailer,
@@ -28,25 +29,7 @@ import {
 // [
 //   {id: '', title: '', tagline: '', overview: '', poster: '', ... }
 // ]
-const initialBookmark = []
 
-function bookmarkReducer(state, action) {
-  switch (action.type) {
-    case 'create':
-      return [...state, action.payload]
-    case 'update':
-      return state.map((bookmark) => {
-        return bookmark.id === action.payload.id
-          ? action.payload 
-          : bookmark
-      })
-    case 'delete':
-      return state.filter(({ id }) => id !== action.payload.id)
-    case 'read':
-    default:
-      return state
-  }
-}
 
 // 사용자가 좋아요(❤️) 버튼을 누르면 `쓰기(create)`를 요청(알림)
 // dispatch({type: create, payload: newBookmark})
@@ -57,7 +40,8 @@ function bookmarkReducer(state, action) {
 const { idle, pending, rejected, resolved } = STATUS
 
 export default function MovieDetailPage({ match }) {
-  const [details, dispatch] = React.useReducer(bookmarkReducer, initialBookmark);
+  const details = useBookmarkList();
+  const dispatch = useBookmarkDispatch();
   const [checkBookmark, setCheckBookmark] = useState(false);
   // props → ID: 596247, 527774, 464052, 399566
   const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id));
@@ -69,11 +53,10 @@ export default function MovieDetailPage({ match }) {
 
   const handleClick = () => {
     setCheckBookmark(!checkBookmark);
+
+    console.log(createBookmark, deleteBookmark);
     
-    dispatch({
-      type: !checkBookmark ? 'create' : 'delete',
-      payload: json
-    })
+    dispatch(!checkBookmark ? createBookmark(json) : deleteBookmark(json));
   }
 
   
