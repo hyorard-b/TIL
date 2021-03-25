@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { tmdb } from 'api'
 import { useFetchData, STATUS } from 'hooks'
-import { Effects, YoutubePlayer } from 'components'
+import { Effects, YoutubePlayer, BookmarkButton } from 'components'
 import { Helmet } from 'react-helmet-async'
 import {
   container,
@@ -11,7 +11,9 @@ import {
   title,
   tagline,
   overview,
-} from './MovieDetail.module.scss'
+  button,
+} from './MovieDetail.module.scss';
+
 
 /* -------------------------------------------------------------------------- *
  * 리듀서 훅 활용 편
@@ -39,7 +41,7 @@ function bookmarkReducer(state, action) {
           : bookmark
       })
     case 'delete':
-      return state.filter(({ id }) => id !== action.payload)
+      return state.filter(({ id }) => id !== action.payload.id)
     case 'read':
     default:
       return state
@@ -56,30 +58,23 @@ const { idle, pending, rejected, resolved } = STATUS
 
 export default function MovieDetailPage({ match }) {
   const [details, dispatch] = React.useReducer(bookmarkReducer, initialBookmark);
-
+  const [checkBookmark, setCheckBookmark] = useState(false);
   // props → ID: 596247, 527774, 464052, 399566
   const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id));
 
   useEffect(() => {
+    console.log(checkBookmark)
     console.log(details);
-  }, [details]);
+  }, [checkBookmark, details]);
 
-  useEffect(() => {
-    if (json) {
-      const { id, title, tagline, overview, poster, homepage } = json;
-      dispatch({
-        type: 'create',
-        payload: {
-          id,
-          title,
-          tagline,
-          overview,
-          poster,
-          homepage
-        }
-      });
-    }
-  }, [json]);
+  const handleClick = () => {
+    setCheckBookmark(!checkBookmark);
+    
+    dispatch({
+      type: !checkBookmark ? 'create' : 'delete',
+      payload: json
+    })
+  }
 
   
   if (status === idle) {
@@ -95,30 +90,6 @@ export default function MovieDetailPage({ match }) {
   }
 
   if (status === resolved) {
-    // 무비 정보
-
-    /* dispatch({
-      type: 'create',
-      payload: json
-    }) */
-
-    /* json && dispatch({
-      type: 'create',
-      payload: json
-    }) */
-    /* json && dispatch({
-      type: 'create',
-      payload: json
-    })
- */
-    // backdrop_path
-    // poster_path
-    // genres
-    // homepage
-    // title
-    // tagline
-    // overview
-    // videos.results[1].key
 
     return !json ? (
       <Effects message="로딩중" />
@@ -137,7 +108,15 @@ export default function MovieDetailPage({ match }) {
             />
           </a>
           <div className={headline}>
-            <h2 className={title}>{json.title}</h2>
+              <h2 className={title}>{json.title}</h2>
+              <BookmarkButton
+                label="북마크"
+                isActive={checkBookmark}
+                // disabled={checkBookmark}
+                onClick={handleClick}
+                className={button}
+                iconProps={{ size: '2x' }}
+              />
             <p className={tagline}>{json.tagline}</p>
           </div>
           <p className={overview}>{json.overview}</p>

@@ -40,6 +40,7 @@ $shadow: 0 3px 4px rgba(0, 0, 0, 0.7);
   margin-top: 2rem;
   margin-bottom: 0;
   font-size: 32px;
+  display: inline-block;
 }
 
 .tagline {
@@ -53,4 +54,18 @@ $shadow: 0 3px 4px rgba(0, 0, 0, 0.7);
   line-height: 1.7;
   font-size: 20px;
   text-shadow: $shadow;
+}
+
+.button {
+  background: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 0, 0);
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
 }
