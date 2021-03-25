@@ -1,7 +1,7 @@
 import 'styles/pages/page.scss'
 import { Effects } from 'components'
 import image from 'assets/vision.png'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { vision, effect } from './Home.module.scss'
 
 /* -------------------------------------------------------------------------- */

@@ -2,7 +2,7 @@ import React from 'react'
 import { tmdb } from 'api'
 import { useFetchData, STATUS } from 'hooks'
 import { Effects, YoutubePlayer } from 'components'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import {
   container,
   videoTrailer,

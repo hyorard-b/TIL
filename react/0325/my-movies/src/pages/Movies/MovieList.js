@@ -1,7 +1,7 @@
 import { tmdb } from 'api'
 import { useFetchData, STATUS } from 'hooks'
 import { Effects } from 'components'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { list, figure, title } from './MovieList.module.scss'
 
 const { idle, pending, resolved, rejected } = STATUS
