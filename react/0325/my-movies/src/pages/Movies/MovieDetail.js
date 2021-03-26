@@ -43,7 +43,8 @@ export default function MovieDetailPage({ match }) {
   const details = useBookmarkList();
   const dispatch = useBookmarkDispatch();
   const [checkBookmark, setCheckBookmark] = useState(() => {
-    const isMarked = details.filter(({ id }) => match.params.id === id).length > 0;
+    console.log(typeof match.params.id);
+    const isMarked = details.filter(({ id }) => parseInt(match.params.id, 10) === id).length > 0;
 
     return isMarked;
   });
