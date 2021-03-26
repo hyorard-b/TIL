@@ -9,12 +9,7 @@ import { tmdb } from 'api'
 
 export default function BookmarkPage(props) {
   const bookmarkList = useBookmarkList();
-/* <img
-              className={poster}
-              src={tmdb.getImageURL(json.poster_path, 200)}
-              alt={json.title}
-              height={480}
-            /> */
+  
   return (
     <div className="bookmark-page">
       <Helmet>

@@ -42,9 +42,14 @@ const { idle, pending, rejected, resolved } = STATUS
 export default function MovieDetailPage({ match }) {
   const details = useBookmarkList();
   const dispatch = useBookmarkDispatch();
-  const [checkBookmark, setCheckBookmark] = useState(false);
+  const [checkBookmark, setCheckBookmark] = useState(() => {
+    const isMarked = details.filter(({ id }) => match.params.id === id).length > 0;
+
+    return isMarked;
+  });
   // props → ID: 596247, 527774, 464052, 399566
   const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id));
+
 
   useEffect(() => {
     console.log(details);
@@ -96,6 +101,7 @@ export default function MovieDetailPage({ match }) {
                 onClick={handleClick}
                 className={button}
                 iconProps={{ size: '2x' }}
+                id={json.id}
               />
             <p className={tagline}>{json.tagline}</p>
           </div>
