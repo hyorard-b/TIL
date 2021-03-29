@@ -13,35 +13,17 @@ import {
   overview,
   button,
 } from './MovieDetail.module.scss'
+import { addBookmarkAction, deleteBookmarkACtion, useBookmark } from 'contexts/bookmark'
 
 /* -------------------------------------------------------------------------- */
-
-const initialBookmark = []
-
-function bookmarkReducer(state, action) {
-  switch (action.type) {
-    case 'create':
-      return [...state, action.payload]
-    case 'update':
-      return state.map((bookmark) => {
-        return bookmark.id === action.payload.id ? action.payload : bookmark
-      })
-    case 'delete':
-      return state.filter(({ id }) => id !== action.payload)
-    // 읽기를 시도할 경우, 현재 상태를 반환하도록 설정합니다.
-    // 읽기 id
-    case 'read':
-    default:
-      return state
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 
 const { idle, pending, rejected, resolved } = STATUS
 
 export default function MovieDetailPage({ match }) {
-  const [state, dispatch] = React.useReducer(bookmarkReducer, initialBookmark)
+
+  const {state, dispatch} = useBookmark();
 
   const [status, error, json] = useFetchData(tmdb.getDetail(match.params.id))
 
@@ -56,12 +38,10 @@ export default function MovieDetailPage({ match }) {
   // 이벤트 리스너 설정
   const addBookmark = (newBookmark) => {
     // 컴포넌트 상태 업데이트
-    setCheckBookmark(true)
+    setCheckBookmark(!checkBookmark)
     // 리듀서에게 디스패치 → 리듀서 (상태 업데이트) → React 리랜더링 (컴포넌트 업데이트)
-    dispatch({
-      type: 'create',
-      payload: newBookmark,
-    })
+
+    dispatch(!checkBookmark ? addBookmarkAction(newBookmark) : deleteBookmarkACtion(newBookmark));
   }
 
   if (status === idle) {
@@ -97,7 +77,7 @@ export default function MovieDetailPage({ match }) {
             <h2 className={title}>{json.title}</h2>
             <BookmarkButton
               isActive={checkBookmark}
-              disabled={checkBookmark}
+              // disabled={checkBookmark}
               onClick={() =>
                 addBookmark({
                   id: match.params.id,
