@@ -1,10 +1,15 @@
 import { container, avatar as imgPath } from './Profile.module.scss'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LazyLoadingImg } from 'components'
+import { useSelector } from 'react-redux'
+import { selectAuth } from 'redux/storage/auth/auth'
 
 /* component ---------------------------------------------------------------- */
 
-export default function Profile({ authUser: { displayName, photoURL } }) {
+export default function Profile() {
+  // const authUser = useSelector((state) => state.auth.authUser);
+  const auth = useSelector(selectAuth);
+  const { photoURL, displayName } = auth.authUser;
   const figure = {
     hidden: { scale: 0, opacity: 0 },
     visible: { scale: 1, opacity: 1 },

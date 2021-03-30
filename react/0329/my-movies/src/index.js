@@ -6,11 +6,14 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import './styles/index.scss'
 
 import App from './app/App'
+import { StoreProvider } from './redux/store';
 
 render(
   <StrictMode>
     <Router>
-      <App />
+      <StoreProvider>
+        <App />
+      </StoreProvider>
     </Router>
   </StrictMode>,
   document.getElementById('root')

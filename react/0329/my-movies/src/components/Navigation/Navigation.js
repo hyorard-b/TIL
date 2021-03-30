@@ -16,6 +16,8 @@ import {
   gteMd,
   ltMd,
 } from './Navigation.module.scss'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { signInAction, signOutAction } from 'redux/storage/auth/auth'
 
 /* dummy authUser ----------------------------------------------------------- */
 
@@ -28,7 +30,16 @@ const dummyAuthUser = {
 
 /* component ---------------------------------------------------------------- */
 
-function Navigation({ authUser, isAuthed, onSignIn, onSignOut, children }) {
+function Navigation({ children }) {
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  const { authUser, isAuthed } = auth;
+
+  const onSignIn = currentUser => dispatch(signInAction(currentUser));
+  const onSignOut = () => dispatch(signOutAction());
+
+
   // ------------------------------------------------------------------------
   // 내비게이션 활성
   const history = useHistory()
@@ -191,4 +202,16 @@ function Navigation({ authUser, isAuthed, onSignIn, onSignOut, children }) {
   )
 }
 
-export default Navigation
+/* const mapStateToProps = ({ auth: { authUser, isAuthed } }) => ({
+  authUser,
+  isAuthed
+});
+
+const mapDispatchToProps = {
+  onSignIn: signInAction,
+  onSignOut: signOutAction
+}; */
+
+// const withConnect = connect(mapStateToProps, mapDispatchToProps)(Navigation);
+
+export default Navigation;
